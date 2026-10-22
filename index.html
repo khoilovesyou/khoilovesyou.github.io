@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg-color: #0d0c15;
-      --card-bg: rgba(21, 19, 36, 0.75); /* nền card hơi trong suốt tạo hiệu ứng kính mờ */
+      --card-bg: rgba(21, 19, 36, 0.78);
       --accent-color: #a855f7;
       --accent-hover: #c084fc;
       --text-main: #f3f4f6;
@@ -28,12 +28,12 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 50px 16px;
+      padding: 50px 16px 80px;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* ảnh background toàn màn hình với opacity 40% */
+    /* background toàn màn hình */
     .bg-image {
       position: fixed;
       top: 0;
@@ -41,11 +41,10 @@
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      opacity: 0.4; /* độ mờ 40% chuẩn ý cậu nè */
+      opacity: 0.4;
       z-index: -2;
     }
 
-    /* lớp phủ chuyển màu tím đen huyền ảo cho nền */
     .bg-overlay {
       position: fixed;
       top: 0;
@@ -116,8 +115,8 @@
       justify-content: center;
       padding: 14px 20px;
       background-color: var(--card-bg);
-      backdrop-filter: blur(8px); /* hiệu ứng kính mờ nhìn xịn cực */
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       color: var(--text-main);
@@ -130,7 +129,7 @@
 
     .link-item:hover {
       border-color: var(--accent-color);
-      background-color: rgba(35, 29, 61, 0.9);
+      background-color: rgba(35, 29, 61, 0.95);
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);
       color: #fff;
@@ -138,33 +137,81 @@
 
     .section-card {
       background-color: var(--card-bg);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 20px;
+      padding: 22px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .section-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--accent-color);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .about-text {
+    .content-text {
       color: var(--text-sub);
       font-size: 0.92rem;
-      line-height: 1.6;
+      line-height: 1.65;
+    }
+
+    .info-list {
+      list-style-type: none;
+      margin-top: 10px;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .info-list > li {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .info-list > li::before {
+      content: "•";
+      color: var(--accent-color);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .sub-list {
+      list-style-type: none;
+      padding-left: 18px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sub-list > li {
+      position: relative;
+      padding-left: 14px;
+      color: #cbd5e1;
+    }
+
+    .sub-list > li::before {
+      content: "+";
+      color: var(--accent-hover);
+      position: absolute;
+      left: 0;
+      font-size: 0.85rem;
     }
 
     .tag-container {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 16px;
     }
 
     .tag {
@@ -191,29 +238,65 @@
         <img class="avatar" src="./images/avatar.jpg" alt="avatar">
       </div>
       <h1>hi, i'm leekhoi</h1>
-      <p class="subtitle">welcome to my personal space</p>
+      <p class="subtitle">welcome to my vibecoded website</p>
     </div>
 
     <!-- social links -->
     <div class="links-group">
-      <a href="https://facebook.com/your-username" target="_blank" class="link-item">facebook</a>
-      <a href="https://soundcloud.com/your-username" target="_blank" class="link-item">soundcloud</a>
-      <a href="https://tiktok.com/@your-username" target="_blank" class="link-item">tiktok</a>
-      <a href="https://github.com/your-username" target="_blank" class="link-item">github</a>
-      <a href="https://open.spotify.com/user/your-username" target="_blank" class="link-item">spotify</a>
+      <a href="https://t.me/lekhoi2811" target="_blank" class="link-item">telegram</a>
+      <a href="https://soundcloud.com/lekhoi2811" target="_blank" class="link-item">soundcloud</a>
+      <a href="https://tiktok.com/@lekhoi2811" target="_blank" class="link-item">tiktok</a>
+      <a href="https://github.com/khoilovesyou" target="_blank" class="link-item">github</a>
+      <a href="https://open.spotify.com/user/31ga5gg5uhonbqtozsvnir3nbsoa" target="_blank" class="link-item">spotify</a>
     </div>
 
-    <!-- about section -->
+    <!-- about me section -->
     <div class="section-card">
       <div class="section-title">about me</div>
-      <p class="about-text">
-        chào cậu! đây là nơi tớ chia sẻ những thứ nhỏ xíu về bản thân, âm nhạc và sở thích cá nhân. cậu có thể chỉnh sửa dòng giới thiệu này tuỳ thích nhen...
-      </p>
-      
+      <div class="content-text">
+        <p>i'm Lê Khôi but u can call me leekhoi or khoi. lives in Quang Ninh, Vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves</p>
+        <ul class="info-list">
+          <li>purple is my favorite color</li>
+          <li>my birthday is November 28th</li>
+        </ul>
+      </div>
       <div class="tag-container">
-        <span class="tag">#music</span>
+        <span class="tag">#tech</span>
         <span class="tag">#vibing</span>
-        <span class="tag">#coding</span>
+        <span class="tag">#purple</span>
+      </div>
+    </div>
+
+    <!-- my setup section -->
+    <div class="section-card">
+      <div class="section-title">my setup</div>
+      <div class="content-text">
+        <ul class="info-list">
+          <li>
+            my daily phone is an iPhone 13 Midnight, other phones i have is
+            <ul class="sub-list">
+              <li>iPhone 11</li>
+              <li>iPhone 7 Plus</li>
+              <li>iPhone 6</li>
+              <li>iPhone 5s</li>
+              <li>two Xiaomi Redmi 9A</li>
+              <li>Samsung J7 Prime</li>
+              <li>Samsung J2 Prime</li>
+              <li>Samsung J2</li>
+              <li>Sony Xperia XZ1 (carrier locked)</li>
+            </ul>
+          </li>
+          <li>
+            my pc specs are
+            <ul class="sub-list">
+              <li>i5-11400f + ASUS Prime H510M-K</li>
+              <li>2x16gb XPG D50 DDR4 3200mhz</li>
+              <li>PowerColor Red Devil RX 580 8gb (will upgrade to a white rtx 5060 soon)</li>
+              <li>a mix of 5 ssds and hdds, totaling around 2tb</li>
+              <li>dualbooted with windows 10 and macos monterey</li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
