@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hi, i'm leekhoi</title>
+  <style>
+    :root {
+      --bg-color: #0d0c15;
+      --card-bg: #151324;
+      --accent-color: #a855f7;
+      --accent-hover: #c084fc;
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+      --border-color: #2e284a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 30px 16px 50px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* banner / ảnh bìa */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4; /* độ trong suốt 40% theo ý cậu nè */
+      display: block;
+    }
+
+    /* lớp phủ viền chuyển tiếp mượt mà */
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 40%, var(--card-bg) 100%);
+      pointer-events: none;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-top: -55px; /* kéo avatar đè nhẹ lên ảnh bìa cho nghệ */
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-wrapper {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--accent-color), #6366f1);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.45);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background-color: var(--card-bg);
+      border: 2px solid var(--bg-color);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+    }
+
+    .links-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .link-item:hover {
+      border-color: var(--accent-color);
+      background-color: #1c1833;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(168, 85, 247, 0.25);
+      color: #fff;
+    }
+
+    .section-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+      letter-spacing: -0.2px;
+    }
+
+    .about-text {
+      color: var(--text-sub);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: var(--accent-hover);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- banner / ảnh bìa -->
+    <div class="banner-container">
+      <img class="banner-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80" alt="cover banner">
+      <div class="banner-overlay"></div>
+    </div>
+
+    <!-- header profile -->
+    <div class="profile-header">
+      <div class="avatar-wrapper">
+        <img class="avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=leekhoi" alt="avatar">
+      </div>
+      <h1>hi, i'm leekhoi</h1>
+      <p class="subtitle">welcome to my personal space</p>
+    </div>
+
+    <!-- social links -->
+    <div class="links-group">
+      <a href="https://facebook.com/your-username" target="_blank" class="link-item">facebook</a>
+      <a href="https://soundcloud.com/your-username" target="_blank" class="link-item">soundcloud</a>
+      <a href="https://tiktok.com/@your-username" target="_blank" class="link-item">tiktok</a>
+      <a href="https://github.com/your-username" target="_blank" class="link-item">github</a>
+      <a href="https://open.spotify.com/user/your-username" target="_blank" class="link-item">spotify</a>
+    </div>
+
+    <!-- about section -->
+    <div class="section-card">
+      <div class="section-title">about me</div>
+      <p class="about-text">
+        chào cậu! đây là nơi tớ chia sẻ những thứ nhỏ xíu về bản thân, âm nhạc và sở thích cá nhân. cậu có thể chỉnh sửa dòng giới thiệu này tuỳ thích nhen...
+      </p>
+      
+      <div class="tag-container">
+        <span class="tag">#music</span>
+        <span class="tag">#vibing</span>
+        <span class="tag">#coding</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
