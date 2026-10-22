@@ -1,45 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hi, i'm leekhoi</title>
   <style>
-    /* bảng màu dark mode (vàng nhạt soft yellow) */
+    /* bảng màu dark mode: tím pastel + vàng pastel */
     :root {
-      --bg-color: #0e0d0a;
-      --card-bg: rgba(26, 24, 20, 0.55); /* trong suốt hơn một chút nè */
-      --btn-bg: rgba(26, 24, 20, 0.5);
-      --accent-color: #fef08a;
-      --accent-hover: #fde047;
-      --accent-glow: rgba(254, 240, 138, 0.35);
-      --text-main: #fefce8;
-      --text-sub: #a1a1aa;
-      --border-color: rgba(254, 240, 138, 0.2);
-      --overlay-gradient: radial-gradient(circle at top, rgba(254, 240, 138, 0.1), transparent 70%),
-                          linear-gradient(to bottom, transparent, var(--bg-color));
+      --bg-color: #0c0b10;
+      --card-bg: rgba(24, 21, 33, 0.46);
+      --card-hover: rgba(34, 29, 48, 0.62);
+      --inner-bg: rgba(18, 15, 26, 0.42);
+      --pastel-yellow: #fef08a;
+      --pastel-purple: #d8b4fe;
+      --accent-glow: rgba(216, 180, 254, 0.22);
+      --yellow-glow: rgba(254, 240, 138, 0.22);
+      --text-main: #faf8ff;
+      --text-sub: #b4aec2;
+      --border-color: rgba(216, 180, 254, 0.2);
+      --border-hover: rgba(254, 240, 138, 0.45);
+      --overlay-gradient: radial-gradient(circle at 20% 15%, rgba(216, 180, 254, 0.12), transparent 55%),
+                          radial-gradient(circle at 80% 10%, rgba(254, 240, 138, 0.1), transparent 55%),
+                          linear-gradient(to bottom, rgba(12, 11, 16, 0.25), var(--bg-color));
     }
 
     /* bảng màu light mode */
     body.light-theme {
       --bg-color: #faf8f5;
-      --card-bg: rgba(255, 255, 255, 0.65); /* trong suốt hơn cho bản sáng */
-      --btn-bg: rgba(255, 255, 255, 0.55);
-      --accent-color: #ca8a04;
-      --accent-hover: #a16207;
-      --accent-glow: rgba(202, 138, 4, 0.25);
-      --text-main: #27272a;
-      --text-sub: #71717a;
-      --border-color: rgba(202, 138, 4, 0.25);
-      --overlay-gradient: radial-gradient(circle at top, rgba(254, 240, 138, 0.3), transparent 70%),
-                          linear-gradient(to bottom, transparent, var(--bg-color));
+      --card-bg: rgba(255, 255, 255, 0.55);
+      --card-hover: rgba(255, 255, 255, 0.75);
+      --inner-bg: rgba(245, 240, 255, 0.48);
+      --pastel-yellow: #ca8a04;
+      --pastel-purple: #9333ea;
+      --accent-glow: rgba(147, 51, 234, 0.15);
+      --yellow-glow: rgba(202, 138, 4, 0.15);
+      --text-main: #221d2e;
+      --text-sub: #645c73;
+      --border-color: rgba(147, 51, 234, 0.18);
+      --border-hover: rgba(202, 138, 4, 0.4);
+      --overlay-gradient: radial-gradient(circle at 20% 15%, rgba(216, 180, 254, 0.28), transparent 55%),
+                          radial-gradient(circle at 80% 10%, rgba(254, 240, 138, 0.28), transparent 55%),
+                          linear-gradient(to bottom, rgba(250, 248, 245, 0.2), var(--bg-color));
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      text-transform: lowercase;
     }
 
     body {
@@ -49,12 +57,13 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 60px 16px 80px;
+      padding: 36px 24px 90px;
       position: relative;
       overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
     }
 
-    /* background ảnh toàn màn hình */
+    /* background toàn màn hình opacity 40% */
     .bg-image {
       position: fixed;
       top: 0;
@@ -64,7 +73,7 @@
       object-fit: cover;
       opacity: 0.4;
       z-index: -2;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
     }
 
     .bg-overlay {
@@ -78,55 +87,135 @@
       z-index: -1;
     }
 
-    /* nút toggle đổi mode */
-    .theme-toggle-btn {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      z-index: 100;
-      background-color: var(--btn-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      border-radius: 9999px;
-      padding: 6px 14px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-    }
-
-    .theme-toggle-btn:hover {
-      border-color: var(--accent-color);
-      transform: scale(1.05);
-    }
-
-    .container {
+    /* khung chính rộng rãi, thoáng mắt */
+    .portfolio-wrapper {
       width: 100%;
-      max-width: 480px;
+      max-width: 1080px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      position: relative;
+      gap: 24px;
       z-index: 1;
     }
 
-    .profile-header {
-      text-align: center;
+    /* thanh navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      background-color: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 9px;
+      height: 9px;
+      background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-yellow));
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--pastel-purple);
+    }
+
+    .theme-toggle-btn {
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 9999px;
+      padding: 7px 16px;
+      font-size: 0.84rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--pastel-yellow);
+      transform: translateY(-1px);
+    }
+
+    /* hệ thống bento grid rộng rãi */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      transition: all 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .bento-card:hover {
+      border-color: var(--border-hover);
+      background-color: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    .col-7 { grid-column: span 7; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-12 { grid-column: span 12; }
+
+    /* tiêu đề từng ô */
+    .card-label {
+      font-size: 0.8rem;
+      color: var(--pastel-yellow);
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-label span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--pastel-purple);
+    }
+
+    /* ô 1: hero & giới thiệu */
+    .hero-top {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 22px;
     }
 
     .avatar-wrapper {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 16px;
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
       border-radius: 50%;
       padding: 3px;
-      background: linear-gradient(135deg, var(--accent-color), #fef9c3);
-      box-shadow: 0 0 25px var(--accent-glow);
+      background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-yellow));
+      box-shadow: 0 0 24px var(--accent-glow);
     }
 
     .avatar {
@@ -134,205 +223,625 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      display: block;
-      background-color: var(--card-bg);
       border: 2px solid var(--bg-color);
     }
 
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      color: var(--pastel-purple);
+      padding: 5px 13px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .status-badge-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--pastel-yellow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--pastel-yellow);
+    }
+
     h1 {
-      font-size: 1.6rem;
+      font-size: 1.9rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
+      letter-spacing: -0.6px;
+      margin-bottom: 4px;
     }
 
     .subtitle {
       color: var(--text-sub);
-      font-size: 0.95rem;
+      font-size: 0.96rem;
     }
 
-    .links-group {
+    .bio-box {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-sub);
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+
+    .bio-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .highlight-pill {
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .highlight-pill strong {
+      color: var(--pastel-purple);
+      font-weight: 600;
+    }
+
+    /* ô 2: mp3 music player (curved square, không xoay) */
+    .player-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .cover-square {
+      width: 84px;
+      height: 84px;
+      flex-shrink: 0;
+      border-radius: 18px; /* ô vuông bo góc curved square */
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(216, 180, 254, 0.25), rgba(254, 240, 138, 0.2));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    }
+
+    .cover-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .track-info {
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .track-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .track-artist {
+      font-size: 0.88rem;
+      color: var(--pastel-purple);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-progress-area {
+      margin-bottom: 16px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--pastel-purple), var(--pastel-yellow));
+      border-radius: 9999px;
+      transition: width 0.1s linear;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--text-sub);
+      margin-top: 6px;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ctrl-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ctrl-btn {
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--pastel-purple);
+      color: var(--pastel-yellow);
+      transform: translateY(-1px);
+    }
+
+    .ctrl-btn.play-main {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(216, 180, 254, 0.25), rgba(254, 240, 138, 0.25));
+      border-color: var(--pastel-yellow);
+      color: var(--pastel-yellow);
+    }
+
+    .ctrl-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-sub);
+    }
+
+    .volume-wrap svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 72px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--pastel-yellow);
+      cursor: pointer;
+    }
+
+    /* dải nút mạng xã hội */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 20px;
+      background-color: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.94rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .social-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      color: var(--pastel-purple);
+      transition: color 0.25s ease;
+    }
+
+    .social-btn:hover {
+      border-color: var(--pastel-yellow);
+      background-color: var(--card-hover);
+      color: var(--pastel-yellow);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px var(--accent-glow);
+    }
+
+    .social-btn:hover svg {
+      color: var(--pastel-yellow);
+    }
+
+    /* 3 ô kỹ năng tách riêng thoáng mắt */
+    .skill-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--pastel-purple);
+      margin-bottom: 10px;
+    }
+
+    .skill-desc {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    /* thông số pc */
+    .spec-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    /* các nút link bấm trong suốt mượt mà */
-    .link-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 20px;
-      background-color: var(--btn-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    .spec-item {
+      background-color: var(--inner-bg);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-    }
-
-    .link-item:hover {
-      border-color: var(--accent-color);
-      background-color: var(--card-bg);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--accent-glow);
-      color: var(--accent-color);
-    }
-
-    .section-card {
-      background-color: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-    }
-
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--accent-color);
-      margin-bottom: 12px;
-      letter-spacing: -0.2px;
-    }
-
-    .content-text {
-      color: var(--text-sub);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    .info-list {
-      list-style-type: none;
-      margin-top: 10px;
-      padding-left: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .info-list > li {
-      position: relative;
-      padding-left: 16px;
-    }
-
-    .info-list > li::before {
-      content: "•";
-      color: var(--accent-color);
-      font-weight: bold;
-      position: absolute;
-      left: 0;
-    }
-
-    .sub-list {
-      list-style-type: none;
-      padding-left: 18px;
-      margin-top: 6px;
+      border-radius: 16px;
+      padding: 14px 18px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .sub-list > li {
-      position: relative;
-      padding-left: 14px;
-      opacity: 0.9;
+    .spec-type {
+      font-size: 0.76rem;
+      color: var(--pastel-purple);
+      font-weight: 600;
     }
 
-    .sub-list > li::before {
-      content: "+";
-      color: var(--accent-hover);
-      position: absolute;
-      left: 0;
+    .spec-detail {
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .spec-note {
+      font-size: 0.8rem;
+      color: var(--pastel-yellow);
+    }
+
+    /* bộ sưu tập điện thoại */
+    .daily-driver-box {
+      background: linear-gradient(135deg, rgba(216, 180, 254, 0.14), rgba(254, 240, 138, 0.1));
+      border: 1px solid var(--pastel-purple);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .device-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .device-chip {
+      background-color: var(--inner-bg);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 12px;
       font-size: 0.85rem;
+      color: var(--text-sub);
+      transition: all 0.2s ease;
+    }
+
+    .device-chip:hover {
+      border-color: var(--pastel-yellow);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--text-sub);
+      padding-top: 16px;
+      opacity: 0.85;
+    }
+
+    /* tương thích màn hình nhỏ */
+    @media (max-width: 900px) {
+      .col-7, .col-5, .col-6, .col-4 {
+        grid-column: span 12;
+      }
+      .social-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .social-grid a:last-child {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 20px 14px 60px;
+      }
+      .hero-top {
+        flex-direction: column;
+        text-align: center;
+      }
+      .bio-highlights {
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- nút đổi theme -->
-  <button id="themeToggle" class="theme-toggle-btn" aria-label="toggle theme">
-    <span id="themeIcon">☀️</span>
-    <span id="themeText">light</span>
-  </button>
-
-  <!-- ảnh background full màn hình -->
+  <!-- ảnh background toàn màn hình -->
   <img id="bgImg" class="bg-image" src="./images/banner-dark.jpg" alt="background">
   <div class="bg-overlay"></div>
 
-  <div class="container">
-    <!-- header profile -->
-    <div class="profile-header">
-      <div class="avatar-wrapper">
-        <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="avatar">
+  <div class="portfolio-wrapper">
+    <!-- thanh điều hướng -->
+    <nav class="navbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>leekhoi.space</span>
       </div>
-      <h1>hi, i'm leekhoi</h1>
-      <p class="subtitle">welcome to my vibecoded website</p>
+      <button id="themeToggle" class="theme-toggle-btn" aria-label="toggle theme">
+        <span id="themeIcon">☀️</span>
+        <span id="themeText">light</span>
+      </button>
+    </nav>
+
+    <!-- lưới bento rộng rãi -->
+    <div class="bento-grid">
+
+      <!-- ô 1: giới thiệu bản thân (7 cột) -->
+      <div class="bento-card col-7">
+        <div>
+          <div class="hero-top">
+            <div class="avatar-wrapper">
+              <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="avatar">
+            </div>
+            <div>
+              <div class="status-badge">
+                <span class="status-badge-dot"></span>
+                <span>quang ninh, vietnam</span>
+              </div>
+              <h1>hi, i'm leekhoi</h1>
+              <p class="subtitle">welcome to my vibecoded website</p>
+            </div>
+          </div>
+
+          <div class="bio-box">
+            <p>
+              i'm lê khôi but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves
+            </p>
+            <div class="bio-highlights">
+              <span class="highlight-pill"><strong>favorite color:</strong> purple</span>
+              <span class="highlight-pill"><strong>birthday:</strong> november 28th</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ô 2: trình phát nhạc .mp3 hình vuông bo góc (5 cột) -->
+      <div class="bento-card col-5">
+        <div>
+          <div class="card-label">
+            <span class="dot"></span>
+            <span>now playing — music box</span>
+          </div>
+
+          <div class="player-top">
+            <div class="cover-square">
+              <img id="trackCover" src="./images/cover.jpg" onerror="this.src='./images/avatar-dark.jpg'" alt="track cover">
+            </div>
+            <div class="track-info">
+              <div id="trackTitle" class="track-title">favorite vibe</div>
+              <div id="trackArtist" class="track-artist">leekhoi's audio</div>
+            </div>
+          </div>
+
+          <div class="player-progress-area">
+            <div id="progressBar" class="progress-bar-bg">
+              <div id="progressFill" class="progress-bar-fill"></div>
+            </div>
+            <div class="time-row">
+              <span id="currentTime">0:00</span>
+              <span id="totalDuration">0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <div class="ctrl-buttons">
+            <button id="prevBtn" class="ctrl-btn" title="previous track" aria-label="previous">
+              <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+            </button>
+            <button id="playPauseBtn" class="ctrl-btn play-main" title="play or pause" aria-label="play">
+              <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button id="nextBtn" class="ctrl-btn" title="next track" aria-label="next">
+              <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
+
+          <div class="volume-wrap">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            <input id="volumeSlider" type="range" class="volume-slider" min="0" max="1" step="0.02" value="0.8" aria-label="volume">
+          </div>
+        </div>
+
+        <!-- thẻ audio ẩn load trực tiếp file mp3 -->
+        <audio id="audioPlayer" preload="metadata"></audio>
+      </div>
+
+      <!-- ô 3: dải nút mạng xã hội (12 cột) -->
+      <div class="col-12">
+        <div class="social-grid">
+          <a href="https://t.me/lekhoi2811" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            <span>telegram</span>
+          </a>
+          <a href="https://soundcloud.com/lekhoi2811" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.052-.1-.084-.1zm1.896-.828c-.06 0-.105.045-.113.105l-.217 2.977.217 2.85c.008.06.053.105.113.105.059 0 .105-.045.112-.105l.248-2.85-.248-2.977c-.007-.06-.053-.105-.112-.105zm1.935-.6c-.068 0-.12.052-.127.12l-.195 3.577.195 3.398c.007.067.059.12.127.12.068 0 .12-.053.128-.12l.217-3.398-.217-3.577c-.008-.068-.06-.12-.128-.12zm1.943-.375c-.075 0-.135.06-.143.135l-.172 3.952.172 3.72c.008.075.068.135.143.135.075 0 .135-.06.142-.135l.195-3.72-.195-3.952c-.007-.075-.067-.135-.142-.135zm1.98-.9c-.082 0-.15.067-.157.15l-.15 4.852.15 4.02c.007.083.075.15.157.15.083 0 .15-.067.158-.15l.172-4.02-.172-4.852c-.008-.083-.075-.15-.158-.15zm2.01-.675c-.09 0-.165.075-.172.165l-.128 5.527.128 4.192c.007.09.082.165.172.165.09 0 .165-.075.173-.165l.142-4.192-.142-5.527c-.008-.09-.083-.165-.173-.165zm2.04-.45c-.097 0-.18.082-.187.18l-.105 5.977.105 4.29c.007.098.09.18.187.18.098 0 .18-.082.188-.18l.12-4.29-.12-5.977c-.008-.098-.09-.18-.188-.18zm8.046 2.872c-.398 0-.78.083-1.132.233-.24-2.67-2.475-4.763-5.213-4.763-.667 0-1.312.135-1.905.368-.225.09-.285.18-.285.36v9.292c0 .18.143.33.323.345h8.212c1.643 0 2.978-1.335 2.978-2.977 0-1.643-1.335-2.978-2.978-2.978z"/></svg>
+            <span>soundcloud</span>
+          </a>
+          <a href="https://tiktok.com/@lekhoi2811" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            <span>tiktok</span>
+          </a>
+          <a href="https://github.com/khoilovesyou" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span>github</span>
+          </a>
+          <a href="https://open.spotify.com/user/31ga5gg5uhonbqtozsvnir3nbsoa" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            <span>spotify</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 ô khám phá tách rời giúp layout thoáng hơn (mỗi ô 4 cột) -->
+      <div class="bento-card col-4">
+        <div class="card-label"><span class="dot"></span><span>focus 01</span></div>
+        <div class="skill-title">log &amp; behavior analysis</div>
+        <p class="skill-desc">reading system logs, tracing background events, and figuring out how software behaves under the hood.</p>
+      </div>
+
+      <div class="bento-card col-4">
+        <div class="card-label"><span class="dot"></span><span>focus 02</span></div>
+        <div class="skill-title">os &amp; dualboot tinkering</div>
+        <p class="skill-desc">experimenting with operating systems, running windows 10 alongside macos monterey on custom hardware.</p>
+      </div>
+
+      <div class="bento-card col-4">
+        <div class="card-label"><span class="dot"></span><span>focus 03</span></div>
+        <div class="skill-title">hardware &amp; legacy vault</div>
+        <p class="skill-desc">collecting classic mobile devices, testing custom configurations, and upgrading desktop pc builds.</p>
+      </div>
+
+      <!-- ô pc workstation (6 cột) -->
+      <div class="bento-card col-6">
+        <div>
+          <div class="card-label"><span class="dot"></span><span>my pc specs</span></div>
+          <div class="spec-list">
+            <div class="spec-item">
+              <span class="spec-type">cpu &amp; motherboard</span>
+              <span class="spec-detail">i5-11400f + asus prime h510m-k</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-type">memory</span>
+              <span class="spec-detail">2x16gb xpg d50 ddr4 3200mhz</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-type">graphics card</span>
+              <span class="spec-detail">powercolor red devil rx 580 8gb</span>
+              <span class="spec-note">→ will upgrade to a white rtx 5060 soon</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-type">storage array</span>
+              <span class="spec-detail">a mix of 5 ssds and hdds, totaling around 2tb</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-type">operating system</span>
+              <span class="spec-detail">dualbooted with windows 10 and macos monterey</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ô bộ sưu tập điện thoại (6 cột) -->
+      <div class="bento-card col-6">
+        <div>
+          <div class="card-label"><span class="dot"></span><span>my phone collection</span></div>
+
+          <div class="daily-driver-box">
+            <div class="spec-type">daily phone</div>
+            <div class="spec-detail" style="font-weight: 700; font-size: 1.08rem; margin-top: 4px;">iphone 13 midnight</div>
+            <div class="spec-note" style="margin-top: 2px;">primary daily driver</div>
+          </div>
+
+          <div class="spec-type" style="margin-bottom: 12px; display: block;">other phones i have</div>
+          <div class="device-chips">
+            <span class="device-chip">iphone 11</span>
+            <span class="device-chip">iphone 7 plus</span>
+            <span class="device-chip">iphone 6</span>
+            <span class="device-chip">iphone 5s</span>
+            <span class="device-chip">two xiaomi redmi 9a</span>
+            <span class="device-chip">samsung j7 prime</span>
+            <span class="device-chip">samsung j2 prime</span>
+            <span class="device-chip">samsung j2</span>
+            <span class="device-chip">sony xperia xz1 (carrier locked)</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- social links -->
-    <div class="links-group">
-      <a href="https://t.me/lekhoi2811" target="_blank" class="link-item">telegram</a>
-      <a href="https://soundcloud.com/lekhoi2811" target="_blank" class="link-item">soundcloud</a>
-      <a href="https://tiktok.com/@lekhoi2811" target="_blank" class="link-item">tiktok</a>
-      <a href="https://github.com/khoilovesyou" target="_blank" class="link-item">github</a>
-      <a href="https://open.spotify.com/user/31ga5gg5uhonbqtozsvnir3nbsoa" target="_blank" class="link-item">spotify</a>
-    </div>
-
-    <!-- about me section -->
-    <div class="section-card">
-      <div class="section-title">about me</div>
-      <div class="content-text">
-        <p>i'm Lê Khôi but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves</p>
-        <ul class="info-list">
-          <li>yellow and purple are my favorite colors</li>
-          <li>my birthday is november 28th</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- my setup section -->
-    <div class="section-card">
-      <div class="section-title">my setup</div>
-      <div class="content-text">
-        <ul class="info-list">
-          <li>
-            my daily phone is an iphone 13 midnight, other phones i have are
-            <ul class="sub-list">
-              <li>iphone 11</li>
-              <li>iphone 7 plus</li>
-              <li>iphone 6</li>
-              <li>iphone 5s</li>
-              <li>two xiaomi redmi 9a</li>
-              <li>samsung j7 prime</li>
-              <li>samsung j2 prime</li>
-              <li>samsung j2</li>
-              <li>sony xperia xz1 (carrier locked)</li>
-            </ul>
-          </li>
-          <li>
-            my pc specs are
-            <ul class="sub-list">
-              <li>i5-11400f + asus prime h510m-k</li>
-              <li>2x16gb xpg d50 ddr4 3200mhz</li>
-              <li>powercolor red devil rx 580 8gb (will upgrade to a white rtx 5060 soon)</li>
-              <li>a mix of 5 ssds and hdds, totaling around 2tb</li>
-              <li>dualbooted with windows 10 and macos monterey</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <footer>
+      crafted with vibecoding • leekhoi © 2026
+    </footer>
   </div>
 
   <script>
-    // cấu hình ảnh: dark mode có prefix -dark, light mode không có prefix
+    /* ==========================================================================
+       1. CẤU HÌNH NHẠC MP3 (CẬU SỬA TÊN BÀI & ĐƯỜNG DẪN FILE Ở ĐÂY NHA)
+       ========================================================================== */
+    const playlist = [
+      {
+        title: "girls like u (ft. cardi b)",
+        artist: "maroon 5",
+        src: "./music/song.flac",
+        cover: "./images/cover.jpg"
+      }
+      // cậu có thể copy thêm nhiều bài nữa vào danh sách này nếu thích nè
+    ];
+
+    /* ==========================================================================
+       2. CẤU HÌNH ĐỔI THEME DARK / LIGHT (DARK CÓ PREFIX -dark)
+       ========================================================================== */
     const themeImages = {
       dark: {
         bg: "./images/banner-dark.jpg",
@@ -352,9 +861,7 @@
 
     function getPreferredTheme() {
       const savedTheme = localStorage.getItem("user-theme");
-      if (savedTheme) {
-        return savedTheme;
-      }
+      if (savedTheme) return savedTheme;
       return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 
@@ -389,6 +896,78 @@
         applyTheme(currentTheme);
       }
     });
+
+    /* ==========================================================================
+       3. XỬ LÝ TRÌNH PHÁT NHẠC MP3
+       ========================================================================== */
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+
+    const audio = document.getElementById("audioPlayer");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const playIcon = document.getElementById("playIcon");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+    const currentTimeEl = document.getElementById("currentTime");
+    const totalDurationEl = document.getElementById("totalDuration");
+    const trackTitleEl = document.getElementById("trackTitle");
+    const trackArtistEl = document.getElementById("trackArtist");
+    const trackCoverEl = document.getElementById("trackCover");
+    const volumeSlider = document.getElementById("volumeSlider");
+
+    function loadTrack(index) {
+      const track = playlist[index];
+      trackTitleEl.textContent = track.title;
+      trackArtistEl.textContent = track.artist;
+      trackCoverEl.src = track.cover;
+      audio.src = track.src;
+      audio.load();
+    }
+
+    function formatTime(sec) {
+      if (isNaN(sec) || sec < 0) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? "0" : ""}${s}`; }  function updatePlayIcon() { if (isPlaying) { playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; } else { playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; } }  playPauseBtn.addEventListener("click", () => { if (isPlaying) { audio.pause(); } else { audio.play().catch(() => { trackArtistEl.textContent = "chưa tìm thấy file ./music/song.mp3"; }); } });  audio.addEventListener("play", () => { isPlaying = true; updatePlayIcon(); });  audio.addEventListener("pause", () => { isPlaying = false; updatePlayIcon(); });  audio.addEventListener("loadedmetadata", () => { totalDurationEl.textContent = formatTime(audio.duration); });  audio.addEventListener("timeupdate", () => { if (audio.duration) { const pct = (audio.currentTime / audio.duration) * 100; progressFill.style.width = `${pct}%`;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex);
+      audio.play();
+    });
+
+    progressBar.addEventListener("click", (e) => {
+      if (!audio.duration) return;
+      const rect = progressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      audio.currentTime = pct * audio.duration;
+    });
+
+    prevBtn.addEventListener("click", () => {
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      loadTrack(currentTrackIndex);
+      if (isPlaying) audio.play();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      loadTrack(currentTrackIndex);
+      if (isPlaying) audio.play();
+    });
+
+    volumeSlider.addEventListener("input", (e) => {
+      audio.volume = parseFloat(e.target.value);
+    });
+
+    // khởi tạo bài hát đầu tiên
+    loadTrack(currentTrackIndex);
+    audio.volume = 0.8;
   </script>
 
 </body>
