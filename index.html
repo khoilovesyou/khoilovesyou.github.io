@@ -5,20 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hi, i'm leekhoi</title>
   <style>
+    /* bảng màu dark mode (vàng nhạt soft yellow) */
     :root {
-      --bg-color: #0d0c15;
-      --card-bg: rgba(21, 19, 36, 0.78);
-      --accent-color: #a855f7;
-      --accent-hover: #c084fc;
-      --text-main: #f3f4f6;
-      --text-sub: #9ca3af;
-      --border-color: rgba(168, 85, 247, 0.25);
+      --bg-color: #0e0d0a;
+      --card-bg: rgba(26, 24, 20, 0.55); /* trong suốt hơn một chút nè */
+      --btn-bg: rgba(26, 24, 20, 0.5);
+      --accent-color: #fef08a;
+      --accent-hover: #fde047;
+      --accent-glow: rgba(254, 240, 138, 0.35);
+      --text-main: #fefce8;
+      --text-sub: #a1a1aa;
+      --border-color: rgba(254, 240, 138, 0.2);
+      --overlay-gradient: radial-gradient(circle at top, rgba(254, 240, 138, 0.1), transparent 70%),
+                          linear-gradient(to bottom, transparent, var(--bg-color));
+    }
+
+    /* bảng màu light mode */
+    body.light-theme {
+      --bg-color: #faf8f5;
+      --card-bg: rgba(255, 255, 255, 0.65); /* trong suốt hơn cho bản sáng */
+      --btn-bg: rgba(255, 255, 255, 0.55);
+      --accent-color: #ca8a04;
+      --accent-hover: #a16207;
+      --accent-glow: rgba(202, 138, 4, 0.25);
+      --text-main: #27272a;
+      --text-sub: #71717a;
+      --border-color: rgba(202, 138, 4, 0.25);
+      --overlay-gradient: radial-gradient(circle at top, rgba(254, 240, 138, 0.3), transparent 70%),
+                          linear-gradient(to bottom, transparent, var(--bg-color));
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     body {
@@ -28,12 +49,12 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 50px 16px 80px;
+      padding: 60px 16px 80px;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* background toàn màn hình */
+    /* background ảnh toàn màn hình */
     .bg-image {
       position: fixed;
       top: 0;
@@ -43,6 +64,7 @@
       object-fit: cover;
       opacity: 0.4;
       z-index: -2;
+      transition: opacity 0.3s ease;
     }
 
     .bg-overlay {
@@ -51,10 +73,36 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at top, rgba(168, 85, 247, 0.15), transparent 70%),
-                  linear-gradient(to bottom, transparent, var(--bg-color));
+      background: var(--overlay-gradient);
       pointer-events: none;
       z-index: -1;
+    }
+
+    /* nút toggle đổi mode */
+    .theme-toggle-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 100;
+      background-color: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--accent-color);
+      transform: scale(1.05);
     }
 
     .container {
@@ -77,8 +125,8 @@
       margin: 0 auto 16px;
       border-radius: 50%;
       padding: 3px;
-      background: linear-gradient(135deg, var(--accent-color), #6366f1);
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+      background: linear-gradient(135deg, var(--accent-color), #fef9c3);
+      box-shadow: 0 0 25px var(--accent-glow);
     }
 
     .avatar {
@@ -87,7 +135,7 @@
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      background-color: #151324;
+      background-color: var(--card-bg);
       border: 2px solid var(--bg-color);
     }
 
@@ -109,14 +157,15 @@
       gap: 12px;
     }
 
+    /* các nút link bấm trong suốt mượt mà */
     .link-item {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 14px 20px;
-      background-color: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background-color: var(--btn-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       color: var(--text-main);
@@ -124,25 +173,25 @@
       font-weight: 500;
       font-size: 0.95rem;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     }
 
     .link-item:hover {
       border-color: var(--accent-color);
-      background-color: rgba(35, 29, 61, 0.95);
+      background-color: var(--card-bg);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);
-      color: #fff;
+      box-shadow: 0 6px 20px var(--accent-glow);
+      color: var(--accent-color);
     }
 
     .section-card {
       background-color: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 22px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     }
 
     .section-title {
@@ -193,7 +242,7 @@
     .sub-list > li {
       position: relative;
       padding-left: 14px;
-      color: #cbd5e1;
+      opacity: 0.9;
     }
 
     .sub-list > li::before {
@@ -207,15 +256,21 @@
 </head>
 <body>
 
+  <!-- nút đổi theme -->
+  <button id="themeToggle" class="theme-toggle-btn" aria-label="toggle theme">
+    <span id="themeIcon">☀️</span>
+    <span id="themeText">light</span>
+  </button>
+
   <!-- ảnh background full màn hình -->
-  <img class="bg-image" src="./images/banner.jpg" alt="background">
+  <img id="bgImg" class="bg-image" src="./images/banner-dark.jpg" alt="background">
   <div class="bg-overlay"></div>
 
   <div class="container">
     <!-- header profile -->
     <div class="profile-header">
       <div class="avatar-wrapper">
-        <img class="avatar" src="./images/avatar.jpg" alt="avatar">
+        <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="avatar">
       </div>
       <h1>hi, i'm leekhoi</h1>
       <p class="subtitle">welcome to my vibecoded website</p>
@@ -234,9 +289,9 @@
     <div class="section-card">
       <div class="section-title">about me</div>
       <div class="content-text">
-        <p>i'm lê khôi but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves</p>
+        <p>i'm Lê Khôi but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves</p>
         <ul class="info-list">
-          <li>purple is my favorite color</li>
+          <li>yellow and purple are my favorite colors</li>
           <li>my birthday is november 28th</li>
         </ul>
       </div>
@@ -268,13 +323,73 @@
               <li>2x16gb xpg d50 ddr4 3200mhz</li>
               <li>powercolor red devil rx 580 8gb (will upgrade to a white rtx 5060 soon)</li>
               <li>a mix of 5 ssds and hdds, totaling around 2tb</li>
-              <li>dualbooted with windows 11 24h2 (atlasos v0.5.0) and macos monterey</li>
+              <li>dualbooted with windows 10 and macos monterey</li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
   </div>
+
+  <script>
+    // cấu hình ảnh: dark mode có prefix -dark, light mode không có prefix
+    const themeImages = {
+      dark: {
+        bg: "./images/banner-dark.jpg",
+        avatar: "./images/avatar-dark.jpg"
+      },
+      light: {
+        bg: "./images/banner.jpg",
+        avatar: "./images/avatar.jpg"
+      }
+    };
+
+    const toggleBtn = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeText = document.getElementById("themeText");
+    const bgImg = document.getElementById("bgImg");
+    const avatarImg = document.getElementById("avatarImg");
+
+    function getPreferredTheme() {
+      const savedTheme = localStorage.getItem("user-theme");
+      if (savedTheme) {
+        return savedTheme;
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    function applyTheme(theme) {
+      if (theme === "light") {
+        document.body.classList.add("light-theme");
+        themeIcon.textContent = "🌙";
+        themeText.textContent = "dark";
+        bgImg.src = themeImages.light.bg;
+        avatarImg.src = themeImages.light.avatar;
+      } else {
+        document.body.classList.remove("light-theme");
+        themeIcon.textContent = "☀️";
+        themeText.textContent = "light";
+        bgImg.src = themeImages.dark.bg;
+        avatarImg.src = themeImages.dark.avatar;
+      }
+    }
+
+    let currentTheme = getPreferredTheme();
+    applyTheme(currentTheme);
+
+    toggleBtn.addEventListener("click", () => {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      localStorage.setItem("user-theme", currentTheme);
+      applyTheme(currentTheme);
+    });
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+      if (!localStorage.getItem("user-theme")) {
+        currentTheme = e.matches ? "dark" : "light";
+        applyTheme(currentTheme);
+      }
+    });
+  </script>
 
 </body>
 </html>
