@@ -11,8 +11,8 @@
       color-scheme: dark;
       --bg: #121015;
       --bg-raised: #1b1720;
-      --panel: rgba(30, 25, 35, .58);
-      --panel-strong: rgba(38, 31, 45, .78);
+      --panel: rgba(30, 25, 35, .56);
+      --panel-strong: rgba(40, 32, 47, .82);
       --text: #fcf7fa;
       --muted: #b8aebc;
       --muted-2: #8e8294;
@@ -32,13 +32,13 @@
       --bg: #fdf8fa;
       --bg-raised: #ffffff;
       --panel: rgba(255, 255, 255, .64);
-      --panel-strong: rgba(255, 255, 255, .86);
+      --panel-strong: rgba(255, 255, 255, .88);
       --text: #261d24;
       --muted: #6e5f6b;
       --muted-2: #948390;
-      --line: rgba(219, 101, 155, .16);
-      --accent: #d99b06;   /* vàng ấm dễ đọc trên nền sáng */
-      --accent-2: #e86ca5; /* hồng pastel đậm hơn xíu cho nền sáng */
+      --line: rgba(219, 101, 155, .18);
+      --accent: #d99b06;
+      --accent-2: #e86ca5;
       --accent-ink: #261d24;
       --shadow: 0 24px 70px rgba(84, 42, 68, .08);
     }
@@ -87,9 +87,15 @@
       border-radius: 50%;
       filter: blur(95px);
       opacity: .14;
+      animation: floatBlob 14s ease-in-out infinite alternate;
     }
     .ambient::before { top: 25%; left: -16rem; background: var(--accent-2); }
-    .ambient::after { top: 2%; right: -16rem; background: var(--accent); }
+    .ambient::after { top: 2%; right: -16rem; background: var(--accent); animation-delay: -7s; }
+
+    @keyframes floatBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.08); }
+    }
 
     .background-photo {
       position: fixed;
@@ -137,6 +143,10 @@
       font-weight: 900;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       box-shadow: 0 7px 22px color-mix(in srgb, var(--accent-2) 24%, transparent);
+      transition: transform .25s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .brand:hover .brand-mark {
+      transform: rotate(-8deg) scale(1.08);
     }
     .brand-label {
       display: flex;
@@ -153,21 +163,60 @@
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+    }
+    .clock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      font-size: .76rem;
+      color: var(--muted);
+      font-weight: 600;
+      backdrop-filter: blur(14px);
+    }
+    .clock-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .45; transform: scale(.85); }
     }
     .nav {
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 20px;
     }
     .nav a {
       color: var(--muted);
       text-decoration: none;
       font-size: .86rem;
       font-weight: 550;
-      transition: color .2s ease;
+      transition: color .2s ease, transform .2s ease;
+      position: relative;
     }
-    .nav a:hover { color: var(--accent); }
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0);
+      transition: transform .25s ease;
+    }
+    .nav a:hover { color: var(--text); }
+    .nav a:hover::after { transform: scaleX(1); }
 
     .theme-toggle {
       display: inline-flex;
@@ -192,7 +241,7 @@
     .theme-toggle span { font-size: .8rem; font-weight: 650; }
     .theme-toggle .theme-icon { font-size: 1rem; color: var(--accent); }
 
-    /* layout chính rộng rãi hơn */
+    /* layout chính rộng rãi + spotlight card */
     main {
       width: min(100%, var(--max-width));
       margin: 0 auto;
@@ -210,10 +259,35 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      transition: border-color .25s ease, background-color .25s ease;
+      position: relative;
+      overflow: hidden;
+      transition: transform .28s cubic-bezier(.22, 1, .36, 1), border-color .28s ease, background-color .28s ease;
+    }
+    /* ánh sáng spotlight bám theo chuột trên từng card */
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        480px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+        color-mix(in srgb, var(--accent-2) 13%, transparent),
+        color-mix(in srgb, var(--accent) 6%, transparent) 40%,
+        transparent 80%
+      );
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .panel:hover::before {
+      opacity: 1;
+    }
+    .panel > * {
+      position: relative;
+      z-index: 1;
     }
     .panel:hover {
-      border-color: color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      border-color: color-mix(in srgb, var(--accent-2) 42%, var(--line));
     }
 
     /* cột trái: profile card */
@@ -223,21 +297,6 @@
       flex-direction: column;
       position: sticky;
       top: 24px;
-      overflow: hidden;
-    }
-    .profile-card::before {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      right: -105px;
-      top: -125px;
-      border-radius: 50%;
-      border: 1px solid color-mix(in srgb, var(--accent-2) 26%, transparent);
-      box-shadow:
-        0 0 0 22px color-mix(in srgb, var(--accent-2) 5%, transparent),
-        0 0 0 45px color-mix(in srgb, var(--accent) 4%, transparent);
-      pointer-events: none;
     }
     .eyebrow {
       display: inline-flex;
@@ -257,14 +316,19 @@
       box-shadow: 0 0 12px color-mix(in srgb, var(--accent-2) 65%, transparent);
     }
     .avatar-wrap {
-      width: 110px;
-      height: 110px;
-      margin: 28px 0 20px;
+      width: 112px;
+      height: 112px;
+      margin: 26px 0 20px;
       padding: 3px;
       border-radius: 32px;
       background: linear-gradient(140deg, var(--accent), var(--accent-2));
       box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-2) 20%, transparent);
       transform: rotate(-3deg);
+      transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+      cursor: pointer;
+    }
+    .avatar-wrap:hover {
+      transform: rotate(2deg) scale(1.05);
     }
     .avatar {
       width: 100%;
@@ -314,12 +378,22 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 6px 11px;
+      padding: 6px 12px;
       border: 1px solid var(--line);
       border-radius: 99px;
       font-size: .76rem;
       color: var(--muted);
-      background: color-mix(in srgb, var(--panel-strong) 50%, transparent);
+      background: color-mix(in srgb, var(--panel-strong) 55%, transparent);
+      transition: transform .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .pill.interactive-pill {
+      cursor: pointer;
+      user-select: none;
+    }
+    .pill.interactive-pill:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      color: var(--text);
     }
     .pill .tiny-icon { color: var(--accent); }
     .profile-divider {
@@ -354,12 +428,12 @@
       background: color-mix(in srgb, var(--panel-strong) 52%, transparent);
       font-size: .81rem;
       font-weight: 650;
-      transition: transform .2s ease, color .2s ease, border-color .2s ease, background .2s ease;
+      transition: transform .22s cubic-bezier(.34, 1.56, .64, 1), color .2s ease, border-color .2s ease, background .2s ease;
     }
     .social-link:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.01);
       color: var(--text);
-      border-color: color-mix(in srgb, var(--accent-2) 55%, var(--line));
+      border-color: color-mix(in srgb, var(--accent-2) 60%, var(--line));
       background: var(--panel-strong);
     }
     .social-icon {
@@ -375,7 +449,17 @@
       font-weight: 900;
     }
     .social-link:nth-child(2n) .social-icon { background: var(--accent-2); }
-    .social-link .arrow { margin-left: auto; opacity: .45; font-size: .9rem; }
+    .social-link .arrow {
+      margin-left: auto;
+      opacity: .45;
+      font-size: .9rem;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .social-link:hover .arrow {
+      transform: translate(2px, -2px);
+      opacity: 1;
+      color: var(--accent);
+    }
 
     /* cột phải: main column */
     .main-column {
@@ -385,19 +469,16 @@
       min-width: 0;
     }
 
-    /* cụm bento hàng đầu: welcome + music player */
     .top-bento-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .95fr);
+      grid-template-columns: minmax(0, 1.12fr) minmax(295px, .98fr);
       gap: 26px;
       align-items: stretch;
     }
 
     .welcome-card {
       padding: 34px 36px;
-      min-height: 250px;
-      position: relative;
-      overflow: hidden;
+      min-height: 255px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -412,6 +493,10 @@
       line-height: 1;
       transform: rotate(-12deg);
       pointer-events: none;
+      transition: transform .6s ease;
+    }
+    .welcome-card:hover::after {
+      transform: rotate(15deg) scale(1.06);
     }
     .welcome-card h2 {
       max-width: 13ch;
@@ -420,8 +505,6 @@
       line-height: 1.05;
       letter-spacing: -.07em;
       font-weight: 820;
-      position: relative;
-      z-index: 1;
     }
     .welcome-card h2 em {
       font-style: normal;
@@ -435,33 +518,64 @@
       max-width: 48ch;
       color: var(--muted);
       font-size: .92rem;
-      position: relative;
-      z-index: 1;
     }
 
-    /* thẻ phát nhạc .flac / .mp3 với ô vuông bo góc */
+    /* thẻ phát nhạc .mp3 với ô vuông bo góc + sóng nhạc động */
     .music-card {
       padding: 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 18px;
-      position: relative;
-      overflow: hidden;
+      gap: 16px;
     }
+    .music-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    /* cột sóng nhạc động (equalizer) */
+    .eq-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+    }
+    .eq-bars span {
+      width: 3px;
+      height: 4px;
+      border-radius: 99px;
+      background: linear-gradient(to top, var(--accent), var(--accent-2));
+      transition: height .2s ease;
+    }
+    .music-card.is-playing .eq-bars span:nth-child(1) { animation: eqBounce .7s ease-in-out infinite; }
+    .music-card.is-playing .eq-bars span:nth-child(2) { animation: eqBounce .55s ease-in-out infinite .15s; }
+    .music-card.is-playing .eq-bars span:nth-child(3) { animation: eqBounce .8s ease-in-out infinite .3s; }
+    .music-card.is-playing .eq-bars span:nth-child(4) { animation: eqBounce .6s ease-in-out infinite .1s; }
+
+    @keyframes eqBounce {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+
     .music-top {
       display: flex;
       align-items: center;
       gap: 16px;
     }
     .cover-square {
-      width: 78px;
-      height: 78px;
-      flex: 0 0 78px;
+      width: 80px;
+      height: 80px;
+      flex: 0 0 80px;
       border-radius: 20px; /* ô vuông bo góc curved square, không xoay */
       padding: 2px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       box-shadow: 0 10px 26px color-mix(in srgb, var(--accent-2) 18%, transparent);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .music-card.is-playing .cover-square {
+      transform: scale(1.03);
+      box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-2) 38%, transparent);
     }
     .cover-square img {
       width: 100%;
@@ -499,13 +613,17 @@
     }
     .progress-bar {
       width: 100%;
-      height: 7px;
+      height: 8px;
       border-radius: 999px;
       background: color-mix(in srgb, var(--panel-strong) 75%, transparent);
       border: 1px solid var(--line);
       cursor: pointer;
       overflow: hidden;
       position: relative;
+      transition: transform .15s ease;
+    }
+    .progress-bar:hover {
+      transform: scaleY(1.2);
     }
     .progress-fill {
       height: 100%;
@@ -542,20 +660,27 @@
       display: grid;
       place-items: center;
       cursor: pointer;
-      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
     }
     .ctrl-btn:hover {
       transform: translateY(-2px);
       border-color: var(--accent-2);
     }
+    .ctrl-btn.is-active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
     .ctrl-btn.play-btn {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 14px;
       border: none;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: var(--accent-ink);
-      box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-2) 24%, transparent);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-2) 26%, transparent);
+    }
+    .ctrl-btn.play-btn:hover {
+      transform: translateY(-2px) scale(1.05);
     }
     .ctrl-btn svg {
       width: 15px;
@@ -568,15 +693,25 @@
       gap: 7px;
       color: var(--muted);
     }
-    .vol-group svg {
-      width: 15px;
-      height: 15px;
+    .vol-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      padding: 2px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .vol-btn:hover { color: var(--accent); }
+    .vol-btn svg {
+      width: 16px;
+      height: 16px;
       fill: currentColor;
     }
     .vol-slider {
       -webkit-appearance: none;
       appearance: none;
-      width: 68px;
+      width: 66px;
       height: 5px;
       border-radius: 999px;
       background: color-mix(in srgb, var(--panel-strong) 75%, transparent);
@@ -656,6 +791,12 @@
       border: 1px solid var(--line);
       border-radius: 16px;
       background: color-mix(in srgb, var(--panel-strong) 48%, transparent);
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .fact:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
     }
     .fact-label {
       display: block;
@@ -666,6 +807,7 @@
     }
     .fact strong { font-size: .86rem; font-weight: 650; }
 
+    /* setup interactive blocks */
     .setup-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -677,15 +819,29 @@
       background: color-mix(in srgb, var(--panel-strong) 48%, transparent);
       border: 1px solid var(--line);
       border-radius: 18px;
+      transition: border-color .2s ease;
+    }
+    .setup-block:hover {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
     }
     .setup-block.wide { grid-column: 1 / -1; }
     .setup-block-head {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 9px;
       margin-bottom: 12px;
     }
-    .setup-block-head .setup-emoji { font-size: 1.05rem; }
+    .setup-block-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .setup-hint {
+      font-size: .68rem;
+      color: var(--accent-2);
+      opacity: .85;
+    }
     .setup-block h3 { font-size: .86rem; margin: 0; letter-spacing: -.015em; }
     .setup-block p, .setup-block li {
       color: var(--muted);
@@ -702,14 +858,22 @@
       gap: 6px;
     }
     .clean-list li {
-      padding-left: 15px;
+      padding: 4px 8px 4px 18px;
       position: relative;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color .18s ease, color .18s ease, transform .18s ease;
+    }
+    .clean-list li:hover, .clean-list li.is-selected {
+      background: color-mix(in srgb, var(--accent-2) 14%, transparent);
+      color: var(--text);
+      transform: translateX(3px);
     }
     .clean-list li::before {
       content: "";
       position: absolute;
-      left: 0;
-      top: .7em;
+      left: 6px;
+      top: .85em;
       width: 5px;
       height: 5px;
       border-radius: 50%;
@@ -718,7 +882,7 @@
     .phone-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5px 14px;
+      gap: 4px 10px;
     }
     .pc-highlight { color: var(--text); font-weight: 650; }
     .tech-tags {
@@ -735,6 +899,49 @@
       border: 1px solid var(--line);
       background: var(--panel);
       font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .tech-tag:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    /* thanh inspector hiển thị chi tiết khi bấm vào thiết bị */
+    .gear-inspector {
+      margin-top: 16px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px dashed color-mix(in srgb, var(--accent-2) 45%, var(--line));
+      background: color-mix(in srgb, var(--panel-strong) 65%, transparent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .82rem;
+      color: var(--text);
+      transition: transform .2s ease;
+    }
+    .inspector-badge {
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: var(--accent-ink);
+      font-size: .7rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* hạt sparkle bay lên khi click */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 14px;
+      animation: sparkleFloat 750ms cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+    @keyframes sparkleFloat {
+      0% { opacity: 1; transform: translate(0, 0) scale(.6) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.3) rotate(45deg); }
     }
 
     .footer {
@@ -764,7 +971,7 @@
     }
     @media (max-width: 680px) {
       .topbar { padding-top: 18px; }
-      .nav { display: none; }
+      .nav, .clock-pill { display: none; }
       .brand-label small { display: none; }
       .hero-grid { grid-template-columns: 1fr; }
       .profile-card { position: relative; top: 0; padding: 26px; }
@@ -801,6 +1008,10 @@
       <span class="brand-label">leekhoi <small>welcome to my vibecoded website</small></span>
     </a>
     <div class="topbar-right">
+      <div class="clock-pill" title="quang ninh local time">
+        <span class="clock-dot"></span>
+        <span id="localClock">quang ninh • --:--</span>
+      </div>
       <nav class="nav" aria-label="main navigation">
         <a href="#music">music</a>
         <a href="#about">about</a>
@@ -819,7 +1030,7 @@
       <!-- cột hồ sơ bên trái -->
       <aside class="panel profile-card" aria-label="profile">
         <span class="eyebrow"><span class="eyebrow-dot"></span> personal website</span>
-        <div class="avatar-wrap">
+        <div class="avatar-wrap" id="avatarSparkle" title="click for sparkles!">
           <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="leekhoi's avatar">
         </div>
         <h1>hi, i'm<br>leekhoi<span style="color:var(--accent)">.</span></h1>
@@ -827,7 +1038,10 @@
         <p class="intro">welcome to my vibecoded website — mostly tech, devices, music, and whatever catches my curiosity.</p>
         <div class="meta-row">
           <span class="pill"><span class="tiny-icon">⌖</span> quang ninh, vietnam</span>
-          <span class="pill"><span class="tiny-icon">✦</span> tech enthusiast</span>
+          <span class="pill interactive-pill" id="statusCycler" title="click to change my current mood">
+            <span class="tiny-icon">✦</span>
+            <span id="statusText">reading weird logs</span>
+          </span>
         </div>
         <hr class="profile-divider">
         <div class="social-heading" id="socials"><strong>find me around</strong><span>say hi ✳</span></div>
@@ -850,9 +1064,14 @@
             <p>not a coder, more of a hands-on tinkerer. i like figuring out how things work, one device and one weird log at a time.</p>
           </section>
 
-          <!-- thẻ phát nhạc .flac / .mp3 hình vuông bo góc -->
+          <!-- thẻ phát nhạc .mp3 hình vuông bo góc -->
           <section class="panel music-card" id="music" aria-label="music player">
-            <span class="eyebrow"><span class="eyebrow-dot"></span> now playing</span>
+            <div class="music-header-row">
+              <span class="eyebrow"><span class="eyebrow-dot"></span> <span id="playerStatusLabel">now playing</span></span>
+              <div class="eq-bars" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
 
             <div class="music-top">
               <div class="cover-square">
@@ -860,7 +1079,7 @@
               </div>
               <div class="track-meta">
                 <div id="trackTitle" class="track-title">favorite vibe</div>
-                <div id="trackArtist" class="track-artist">leekhoi's audio (.flac)</div>
+                <div id="trackArtist" class="track-artist">leekhoi's audio (.mp3)</div>
               </div>
             </div>
 
@@ -876,24 +1095,29 @@
 
             <div class="player-controls">
               <div class="ctrl-group">
-                <button id="prevBtn" class="ctrl-btn" type="button" aria-label="previous track">
+                <button id="prevBtn" class="ctrl-btn" type="button" aria-label="previous track" title="previous">
                   <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                 </button>
-                <button id="playPauseBtn" class="ctrl-btn play-btn" type="button" aria-label="play or pause">
+                <button id="playPauseBtn" class="ctrl-btn play-btn" type="button" aria-label="play or pause" title="play / pause">
                   <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-                <button id="nextBtn" class="ctrl-btn" type="button" aria-label="next track">
+                <button id="nextBtn" class="ctrl-btn" type="button" aria-label="next track" title="next">
                   <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+                <button id="loopBtn" class="ctrl-btn is-active" type="button" aria-label="loop track" title="loop enabled">
+                  <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
                 </button>
               </div>
 
               <div class="vol-group">
-                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                <button id="muteBtn" class="vol-btn" type="button" aria-label="mute or unmute">
+                  <svg id="volIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                </button>
                 <input id="volumeSlider" class="vol-slider" type="range" min="0" max="1" step="0.02" value="0.8" aria-label="volume">
               </div>
             </div>
 
-            <audio id="audioPlayer" preload="metadata"></audio>
+            <audio id="audioPlayer" preload="metadata" loop></audio>
           </section>
         </div>
 
@@ -908,12 +1132,18 @@
           </div>
           <p class="about-copy">i'm lê khôi, but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves.</p>
           <div class="fact-grid">
-            <div class="fact"><span class="fact-label">favourite colours</span><strong>💛 pastel yellow &nbsp; 🌸 pastel pink</strong></div>
-            <div class="fact"><span class="fact-label">birthday</span><strong>november 28th 🎂</strong></div>
+            <div class="fact" id="colorFactCard" title="click for pastel sparkles!">
+              <span class="fact-label">favourite colours (click me ✨)</span>
+              <strong>💛 pastel yellow &nbsp; 🌸 pastel pink</strong>
+            </div>
+            <div class="fact" id="bdayFactCard" title="click to check birthday countdown!">
+              <span class="fact-label">birthday</span>
+              <strong id="bdayText">november 28th 🎂</strong>
+            </div>
           </div>
         </section>
 
-        <!-- thẻ cấu hình thiết bị -->
+        <!-- thẻ cấu hình thiết bị tương tác -->
         <section class="panel content-card" id="setup" aria-labelledby="setup-title">
           <div class="section-head">
             <div class="section-title-wrap">
@@ -924,31 +1154,53 @@
           </div>
           <div class="setup-grid">
             <article class="setup-block">
-              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">📱</span><h3>phones</h3></div>
-              <p><span class="pc-highlight">daily driver:</span> iphone 13 midnight</p>
+              <div class="setup-block-head">
+                <div class="setup-block-title"><span class="setup-emoji" aria-hidden="true">📱</span><h3>phones</h3></div>
+                <span class="setup-hint">tap any device ↓</span>
+              </div>
+              <p class="gear-item" data-info="iphone 13 midnight — my trusty daily driver for everything, super smooth & reliable."><span class="pc-highlight">daily driver:</span> iphone 13 midnight</p>
               <ul class="clean-list phone-list" style="margin-top:10px">
-                <li>iphone 11</li><li>iphone 7 plus</li>
-                <li>iphone 6</li><li>iphone 5s</li>
-                <li>2× xiaomi redmi 9a</li><li>samsung j7 prime</li>
-                <li>samsung j2 prime</li><li>samsung j2</li>
-                <li>sony xperia xz1 (carrier locked)</li>
+                <li class="gear-item" data-info="iphone 11 — classic lcd display, still rocks great battery & cameras.">iphone 11</li>
+                <li class="gear-item" data-info="iphone 7 plus — jet/matte era legend with iconic dual cameras & home button.">iphone 7 plus</li>
+                <li class="gear-item" data-info="iphone 6 — ultra thin nostalgia piece from the golden ios days.">iphone 6</li>
+                <li class="gear-item" data-info="iphone 5s — boxy aluminum design with touch id first-gen charm.">iphone 5s</li>
+                <li class="gear-item" data-info="2× xiaomi redmi 9a — twin budget warriors for testing android roms & apps.">2× xiaomi redmi 9a</li>
+                <li class="gear-item" data-info="samsung j7 prime — iconic metal-back midrange phone everyone in vietnam knew.">samsung j7 prime</li>
+                <li class="gear-item" data-info="samsung j2 prime — legendary pocket meme phone with removable battery.">samsung j2 prime</li>
+                <li class="gear-item" data-info="samsung j2 — compact old-school super amoled galaxy.">samsung j2</li>
+                <li class="gear-item" data-info="sony xperia xz1 — snapdragon 835 boxy beauty, currently carrier locked.">sony xperia xz1 (carrier locked)</li>
               </ul>
             </article>
             <article class="setup-block">
-              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">🖥️</span><h3>pc build</h3></div>
+              <div class="setup-block-head">
+                <div class="setup-block-title"><span class="setup-emoji" aria-hidden="true">🖥️</span><h3>pc build</h3></div>
+                <span class="setup-hint">tap any part ↓</span>
+              </div>
               <ul class="clean-list">
-                <li><span class="pc-highlight">cpu:</span> intel core i5-11400f</li>
-                <li><span class="pc-highlight">board:</span> asus prime h510m-k</li>
-                <li><span class="pc-highlight">memory:</span> 32gb (2×16) xpg d50 ddr4-3200</li>
-                <li><span class="pc-highlight">gpu:</span> powercolor red devil rx 580 8gb</li>
-                <li><span class="pc-highlight">storage:</span> mix of 5 ssds and hdds, around 2tb total</li>
+                <li class="gear-item" data-info="intel core i5-11400f — 6 cores / 12 threads rocket lake workhorse for daily multitasking."><span class="pc-highlight">cpu:</span> intel core i5-11400f</li>
+                <li class="gear-item" data-info="asus prime h510m-k — compact, rock-solid motherboard running both windows & macos."><span class="pc-highlight">board:</span> asus prime h510m-k</li>
+                <li class="gear-item" data-info="32gb xpg d50 ddr4-3200 — plenty of headroom for heavy tabs, tools & dual-booting."><span class="pc-highlight">memory:</span> 32gb (2×16) xpg d50 ddr4-3200</li>
+                <li class="gear-item" data-info="powercolor red devil rx 580 8gb — native metal support for macos monterey + 1080p gaming."><span class="pc-highlight">gpu:</span> powercolor red devil rx 580 8gb</li>
+                <li class="gear-item" data-info="5 drives (~2tb total) — separate ssds & hdds keeping windows 10, macos & data neatly isolated."><span class="pc-highlight">storage:</span> mix of 5 ssds and hdds, around 2tb total</li>
               </ul>
-              <div class="tech-tags"><span class="tech-tag">windows 10</span><span class="tech-tag">macos monterey</span><span class="tech-tag">dual boot</span></div>
+              <div class="tech-tags">
+                <span class="tech-tag gear-item" data-info="windows 10 — main partition for gaming, hardware utilities & daily diagnostics.">windows 10</span>
+                <span class="tech-tag gear-item" data-info="macos monterey — hackintosh partition powered by opencore & native rx 580 graphics.">macos monterey</span>
+                <span class="tech-tag gear-item" data-info="dual boot — seamless switching between windows 10 and macos monterey.">dual boot</span>
+              </div>
             </article>
-            <article class="setup-block wide">
-              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">✨</span><h3>next upgrade wishlist</h3></div>
+            <article class="setup-block wide gear-item" data-info="white rtx 5060 — the dream gpu upgrade for a super clean aesthetic & next-gen performance!">
+              <div class="setup-block-head">
+                <div class="setup-block-title"><span class="setup-emoji" aria-hidden="true">✨</span><h3>next upgrade wishlist</h3></div>
+              </div>
               <p>a white rtx 5060 — because performance is great, but a clean-looking build is great too.</p>
             </article>
+          </div>
+
+          <!-- thanh inspector tương tác -->
+          <div class="gear-inspector" id="gearInspector" aria-live="polite">
+            <span class="inspector-badge">inspector</span>
+            <span id="inspectorText">click on any phone or pc component above to inspect its story ✨</span>
           </div>
         </section>
       </div>
@@ -962,12 +1214,12 @@
 
   <script>
     (() => {
-      /* --- 1. danh sách nhạc .flac / .mp3 --- */
+      /* --- 1. danh sách nhạc .mp3 --- */
       const playlist = [
         {
           title: 'favorite vibe',
           artist: 'leekhoi playlist',
-          src: './music/song.flac',
+          src: './music/song.mp3',
           cover: './images/cover.jpg'
         }
       ];
@@ -1033,8 +1285,9 @@
       }
 
       setTheme(preferredTheme());
-      toggle.addEventListener('click', () => {
+      toggle.addEventListener('click', (e) => {
         setTheme(body.classList.contains('light-theme') ? 'dark' : 'light', true);
+        spawnSparkles(e.clientX, e.clientY);
       });
 
       if (window.matchMedia) {
@@ -1043,15 +1296,65 @@
         });
       }
 
-      /* --- 3. xử lý phát nhạc .flac / .mp3 --- */
+      /* --- 3. hiệu ứng spotlight đi theo chuột trên từng tấm panel --- */
+      document.querySelectorAll('.panel').forEach((panel) => {
+        panel.addEventListener('mousemove', (e) => {
+          const rect = panel.getBoundingClientRect();
+          panel.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); panel.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        });
+      });
+
+      /* --- 4. đồng hồ giờ quảng ninh & đổi trạng thái cảm xúc --- */
+      const localClock = document.getElementById('localClock');
+      function updateClock() {
+        const now = new Date();
+        const timeStr = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).format(now);
+        if (localClock) localClock.textContent = `quang ninh • ${timeStr}`; } updateClock(); setInterval(updateClock, 1000);  const moods = [ 'reading weird logs', 'vibing to mp3 tracks', 'tinkering with dualboot', 'saving for white rtx 5060', 'chilling in quang ninh' ]; let moodIdx = 0; const statusCycler = document.getElementById('statusCycler'); const statusText = document.getElementById('statusText'); if (statusCycler && statusText) { statusCycler.addEventListener('click', (e) => { moodIdx = (moodIdx + 1) \% moods.length; statusText.textContent = moods[moodIdx]; spawnSparkles(e.clientX, e.clientY); }); }  /* --- 5. hiệu ứng hạt lấp lánh (sparkles) & đếm ngược sinh nhật 28/11 --- */ function spawnSparkles(x, y) { const symbols = ['✦', '✳', '♥', '★', '🌸', '💛']; for (let i = 0; i < 7; i++) { const el = document.createElement('span'); el.className = 'sparkle-particle'; el.textContent = symbols[Math.floor(Math.random() * symbols.length)]; el.style.left = `${x}px`;
+          el.style.top = `${y}px`; el.style.color = i \% 2 === 0 ? 'var(--accent)' : 'var(--accent-2)'; const angle = Math.random() * Math.PI * 2; const dist = 28 + Math.random() * 48; el.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+          el.style.setProperty('--ty', `${Math.sin(angle) * dist - 15}px`); document.body.appendChild(el); setTimeout(() => el.remove(), 750); } }  const colorFactCard = document.getElementById('colorFactCard'); const avatarSparkle = document.getElementById('avatarSparkle'); [colorFactCard, avatarSparkle].forEach((el) => { if (!el) return; el.addEventListener('click', (e) => spawnSparkles(e.clientX, e.clientY)); });  const bdayFactCard = document.getElementById('bdayFactCard'); const bdayText = document.getElementById('bdayText'); let showingCountdown = false; if (bdayFactCard && bdayText) { bdayFactCard.addEventListener('click', (e) => { showingCountdown = !showingCountdown; if (showingCountdown) { const now = new Date(); let nextBday = new Date(now.getFullYear(), 10, 28); // tháng 11 là index 10 if (now > nextBday) nextBday = new Date(now.getFullYear() + 1, 10, 28); const days = Math.ceil((nextBday - now) / (1000 * 60 * 60 * 24)); bdayText.textContent = days === 0 ? 'happy birthday to me! 🎉' : `${days} days until nov 28th 🎂`;
+          } else {
+            bdayText.textContent = 'november 28th 🎂';
+          }
+          spawnSparkles(e.clientX, e.clientY);
+        });
+      }
+
+      /* --- 6. hộp thông tin thiết bị tương tác (gear inspector) --- */
+      const gearItems = document.querySelectorAll('.gear-item');
+      const inspectorText = document.getElementById('inspectorText');
+      gearItems.forEach((item) => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          gearItems.forEach((el) => el.classList.remove('is-selected'));
+          item.classList.add('is-selected');
+          const info = item.getAttribute('data-info');
+          if (info && inspectorText) {
+            inspectorText.textContent = info;
+          }
+          spawnSparkles(e.clientX, e.clientY);
+        });
+      });
+
+      /* --- 7. xử lý phát nhạc .mp3 --- */
       let currentTrackIndex = 0;
       let isPlaying = false;
 
+      const musicCard = document.getElementById('music');
+      const playerStatusLabel = document.getElementById('playerStatusLabel');
       const audio = document.getElementById('audioPlayer');
       const playPauseBtn = document.getElementById('playPauseBtn');
       const playIcon = document.getElementById('playIcon');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
+      const loopBtn = document.getElementById('loopBtn');
+      const muteBtn = document.getElementById('muteBtn');
+      const volIcon = document.getElementById('volIcon');
       const progressBar = document.getElementById('progressBar');
       const progressFill = document.getElementById('progressFill');
       const currentTimeEl = document.getElementById('currentTime');
@@ -1073,21 +1376,35 @@
         if (isNaN(sec) || sec < 0) return '0:00';
         const m = Math.floor(sec / 60);
         const s = Math.floor(sec % 60);
-        return `${m}:${s < 10 ? '0' : ''}${s}`; }  function updatePlayIcon() { playIcon.innerHTML = isPlaying ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; }  playPauseBtn.addEventListener('click', () => { if (isPlaying) { audio.pause(); } else { audio.play().catch(() => { trackArtistEl.textContent = 'put file in ./music/song.flac'; }); } });  audio.addEventListener('play', () => { isPlaying = true; updatePlayIcon(); }); audio.addEventListener('pause', () => { isPlaying = false; updatePlayIcon(); }); audio.addEventListener('loadedmetadata', () => { totalDurationEl.textContent = formatTime(audio.duration); }); audio.addEventListener('timeupdate', () => { if (audio.duration) { const pct = (audio.currentTime / audio.duration) * 100; progressFill.style.width = `${pct}%`;
+        return `${m}:${s < 10 ? '0' : ''}${s}`; }  function updatePlayUI() { playIcon.innerHTML = isPlaying ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; musicCard.classList.toggle('is-playing', isPlaying); playerStatusLabel.textContent = isPlaying ? 'now vibing ♪' : 'paused'; }  playPauseBtn.addEventListener('click', (e) => { if (isPlaying) { audio.pause(); } else { audio.play().catch(() => { trackArtistEl.textContent = 'put file in ./music/song.mp3'; }); spawnSparkles(e.clientX, e.clientY); } });  audio.addEventListener('play', () => { isPlaying = true; updatePlayUI(); }); audio.addEventListener('pause', () => { isPlaying = false; updatePlayUI(); }); audio.addEventListener('loadedmetadata', () => { totalDurationEl.textContent = formatTime(audio.duration); }); audio.addEventListener('timeupdate', () => { if (audio.duration) { const pct = (audio.currentTime / audio.duration) * 100; progressFill.style.width = `${pct}%`;
           currentTimeEl.textContent = formatTime(audio.currentTime);
         }
       });
       audio.addEventListener('ended', () => {
-        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-        loadTrack(currentTrackIndex);
-        audio.play();
+        if (!audio.loop) {
+          currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+          loadTrack(currentTrackIndex);
+          audio.play();
+        }
       });
 
       progressBar.addEventListener('click', (e) => {
         if (!audio.duration) return;
         const rect = progressBar.getBoundingClientRect();
-        const pct = (e.clientX - rect.left) / rect.width;
+        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
         audio.currentTime = pct * audio.duration;
+      });
+
+      loopBtn.addEventListener('click', () => {
+        audio.loop = !audio.loop;
+        loopBtn.classList.toggle('is-active', audio.loop);
+      });
+
+      muteBtn.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        volIcon.innerHTML = audio.muted
+          ? '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>'
+          : '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
       });
 
       prevBtn.addEventListener('click', () => {
@@ -1104,6 +1421,7 @@
 
       volumeSlider.addEventListener('input', (e) => {
         audio.volume = parseFloat(e.target.value);
+        if (audio.volume > 0 && audio.muted) audio.muted = false;
       });
 
       loadTrack(currentTrackIndex);
