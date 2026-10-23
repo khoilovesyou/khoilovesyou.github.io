@@ -2,973 +2,1113 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hi, i'm leekhoi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121015">
+  <meta name="description" content="hi, i'm leekhoi — a personal corner for tech, devices, music, and things i like.">
+  <title>hi, i'm leekhoi — personal space</title>
   <style>
-    /* bảng màu dark mode: tím pastel + vàng pastel */
     :root {
-      --bg-color: #0c0b10;
-      --card-bg: rgba(24, 21, 33, 0.46);
-      --card-hover: rgba(34, 29, 48, 0.62);
-      --inner-bg: rgba(18, 15, 26, 0.42);
-      --pastel-yellow: #fef08a;
-      --pastel-purple: #d8b4fe;
-      --accent-glow: rgba(216, 180, 254, 0.22);
-      --yellow-glow: rgba(254, 240, 138, 0.22);
-      --text-main: #faf8ff;
-      --text-sub: #b4aec2;
-      --border-color: rgba(216, 180, 254, 0.2);
-      --border-hover: rgba(254, 240, 138, 0.45);
-      --overlay-gradient: radial-gradient(circle at 20% 15%, rgba(216, 180, 254, 0.12), transparent 55%),
-                          radial-gradient(circle at 80% 10%, rgba(254, 240, 138, 0.1), transparent 55%),
-                          linear-gradient(to bottom, rgba(12, 11, 16, 0.25), var(--bg-color));
+      color-scheme: dark;
+      --bg: #121015;
+      --bg-raised: #1b1720;
+      --panel: rgba(30, 25, 35, .58);
+      --panel-strong: rgba(38, 31, 45, .78);
+      --text: #fcf7fa;
+      --muted: #b8aebc;
+      --muted-2: #8e8294;
+      --line: rgba(249, 168, 212, .16);
+      --accent: #fef08a;   /* vàng pastel */
+      --accent-2: #f9a8d4; /* hồng pastel */
+      --accent-ink: #1f161d;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .24);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1180px;
     }
 
-    /* bảng màu light mode */
     body.light-theme {
-      --bg-color: #faf8f5;
-      --card-bg: rgba(255, 255, 255, 0.55);
-      --card-hover: rgba(255, 255, 255, 0.75);
-      --inner-bg: rgba(245, 240, 255, 0.48);
-      --pastel-yellow: #ca8a04;
-      --pastel-purple: #9333ea;
-      --accent-glow: rgba(147, 51, 234, 0.15);
-      --yellow-glow: rgba(202, 138, 4, 0.15);
-      --text-main: #221d2e;
-      --text-sub: #645c73;
-      --border-color: rgba(147, 51, 234, 0.18);
-      --border-hover: rgba(202, 138, 4, 0.4);
-      --overlay-gradient: radial-gradient(circle at 20% 15%, rgba(216, 180, 254, 0.28), transparent 55%),
-                          radial-gradient(circle at 80% 10%, rgba(254, 240, 138, 0.28), transparent 55%),
-                          linear-gradient(to bottom, rgba(250, 248, 245, 0.2), var(--bg-color));
+      color-scheme: light;
+      --bg: #fdf8fa;
+      --bg-raised: #ffffff;
+      --panel: rgba(255, 255, 255, .64);
+      --panel-strong: rgba(255, 255, 255, .86);
+      --text: #261d24;
+      --muted: #6e5f6b;
+      --muted-2: #948390;
+      --line: rgba(219, 101, 155, .16);
+      --accent: #d99b06;   /* vàng ấm dễ đọc trên nền sáng */
+      --accent-2: #e86ca5; /* hồng pastel đậm hơn xíu cho nền sáng */
+      --accent-ink: #261d24;
+      --shadow: 0 24px 70px rgba(84, 42, 68, .08);
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
       text-transform: lowercase;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+    }
+
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, sans-serif;
+      margin: 0;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 36px 24px 90px;
-      position: relative;
+      background:
+        radial-gradient(ellipse at 8% 8%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 38rem),
+        radial-gradient(ellipse at 95% 28%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      padding: 0 28px 64px;
       overflow-x: hidden;
-      transition: background-color 0.35s ease, color 0.35s ease;
+      transition: background-color .25s ease, color .25s ease;
     }
 
-    /* background toàn màn hình opacity 40% */
-    .bg-image {
+    a { color: inherit; }
+    button { font: inherit; }
+    ::selection { background: var(--accent-2); color: var(--accent-ink); }
+
+    .ambient {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      opacity: 0.4;
+      inset: 0;
       z-index: -2;
-      transition: opacity 0.35s ease;
-    }
-
-    .bg-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--overlay-gradient);
       pointer-events: none;
-      z-index: -1;
+      overflow: hidden;
     }
-
-    /* khung chính rộng rãi, thoáng mắt */
-    .portfolio-wrapper {
-      width: 100%;
-      max-width: 1080px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      z-index: 1;
-    }
-
-    /* thanh navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 24px;
-      background-color: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: 9999px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-    }
-
-    .brand {
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-dot {
-      width: 9px;
-      height: 9px;
-      background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-yellow));
+    .ambient::before, .ambient::after {
+      content: "";
+      position: absolute;
+      width: 30rem;
+      height: 30rem;
       border-radius: 50%;
-      box-shadow: 0 0 12px var(--pastel-purple);
+      filter: blur(95px);
+      opacity: .14;
     }
+    .ambient::before { top: 25%; left: -16rem; background: var(--accent-2); }
+    .ambient::after { top: 2%; right: -16rem; background: var(--accent); }
 
-    .theme-toggle-btn {
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      border-radius: 9999px;
-      padding: 7px 16px;
-      font-size: 0.84rem;
-      cursor: pointer;
+    .background-photo {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .34;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity .35s ease;
+      mask-image: linear-gradient(to bottom, #000 15%, rgba(0, 0, 0, .4) 75%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 15%, rgba(0, 0, 0, .4) 75%, transparent 100%);
+    }
+    body.light-theme .background-photo { opacity: .24; }
+
+    /* topbar */
+    .topbar {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+      padding: 26px 0 22px;
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-weight: 500;
-      transition: all 0.25s ease;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      z-index: 5;
     }
-
-    .theme-toggle-btn:hover {
-      border-color: var(--pastel-yellow);
-      transform: translateY(-1px);
+    .brand {
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: -.035em;
     }
-
-    /* hệ thống bento grid rộng rãi */
-    .bento-grid {
+    .brand-mark {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 24px;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      color: #1f161d;
+      font-size: .92rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 7px 22px color-mix(in srgb, var(--accent-2) 24%, transparent);
     }
-
-    .bento-card {
-      background-color: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: 24px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-      transition: all 0.28s ease;
+    .brand-label {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      line-height: 1.1;
     }
-
-    .bento-card:hover {
-      border-color: var(--border-hover);
-      background-color: var(--card-hover);
-      transform: translateY(-2px);
+    .brand-label small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: .02em;
+      font-size: .7rem;
     }
-
-    .col-7 { grid-column: span 7; }
-    .col-5 { grid-column: span 5; }
-    .col-6 { grid-column: span 6; }
-    .col-4 { grid-column: span 4; }
-    .col-12 { grid-column: span 12; }
-
-    /* tiêu đề từng ô */
-    .card-label {
-      font-size: 0.8rem;
-      color: var(--pastel-yellow);
-      font-weight: 600;
-      letter-spacing: 0.4px;
-      margin-bottom: 16px;
+    .topbar-right {
       display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .86rem;
+      font-weight: 550;
+      transition: color .2s ease;
+    }
+    .nav a:hover { color: var(--accent); }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 15px;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent-2) 65%, var(--line));
+    }
+    .theme-toggle span { font-size: .8rem; font-weight: 650; }
+    .theme-toggle .theme-icon { font-size: 1rem; color: var(--accent); }
+
+    /* layout chính rộng rãi hơn */
+    main {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(290px, .82fr) minmax(0, 1.65fr);
+      gap: 26px;
+      align-items: start;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: border-color .25s ease, background-color .25s ease;
+    }
+    .panel:hover {
+      border-color: color-mix(in srgb, var(--accent-2) 38%, var(--line));
+    }
+
+    /* cột trái: profile card */
+    .profile-card {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 24px;
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -105px;
+      top: -125px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 26%, transparent);
+      box-shadow:
+        0 0 0 22px color-mix(in srgb, var(--accent-2) 5%, transparent),
+        0 0 0 45px color-mix(in srgb, var(--accent) 4%, transparent);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
       align-items: center;
       gap: 8px;
+      color: var(--muted);
+      font-size: .74rem;
+      letter-spacing: .12em;
+      font-weight: 750;
     }
-
-    .card-label span.dot {
-      width: 6px;
-      height: 6px;
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background-color: var(--pastel-purple);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 12px color-mix(in srgb, var(--accent-2) 65%, transparent);
     }
-
-    /* ô 1: hero & giới thiệu */
-    .hero-top {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 22px;
-    }
-
-    .avatar-wrapper {
-      width: 96px;
-      height: 96px;
-      flex-shrink: 0;
-      border-radius: 50%;
+    .avatar-wrap {
+      width: 110px;
+      height: 110px;
+      margin: 28px 0 20px;
       padding: 3px;
-      background: linear-gradient(135deg, var(--pastel-purple), var(--pastel-yellow));
-      box-shadow: 0 0 24px var(--accent-glow);
+      border-radius: 32px;
+      background: linear-gradient(140deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-2) 20%, transparent);
+      transform: rotate(-3deg);
     }
-
     .avatar {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
+      border-radius: 29px;
       object-fit: cover;
-      border: 2px solid var(--bg-color);
+      display: block;
+      background: linear-gradient(145deg, #2d2230, #5c4054);
+      border: 3px solid var(--bg-raised);
     }
-
-    .status-badge {
+    .avatar-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #fff5c2;
+      font-weight: 850;
+      font-size: 2rem;
+      letter-spacing: -.08em;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 4vw, 2.75rem);
+      line-height: 1.04;
+      letter-spacing: -.075em;
+      margin: 0;
+      font-weight: 820;
+    }
+    .handle {
+      color: var(--accent-2);
+      font-size: .95rem;
+      margin-top: 10px;
+      font-weight: 650;
+    }
+    .intro {
+      color: var(--muted);
+      font-size: .92rem;
+      margin: 16px 0 0;
+      max-width: 36ch;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .pill {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      color: var(--pastel-purple);
-      padding: 5px 13px;
-      border-radius: 9999px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      margin-bottom: 10px;
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      font-size: .76rem;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel-strong) 50%, transparent);
     }
-
-    .status-badge-dot {
-      width: 6px;
-      height: 6px;
-      background-color: var(--pastel-yellow);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--pastel-yellow);
+    .pill .tiny-icon { color: var(--accent); }
+    .profile-divider {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 26px 0 20px;
     }
-
-    h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: -0.6px;
-      margin-bottom: 4px;
-    }
-
-    .subtitle {
-      color: var(--text-sub);
-      font-size: 0.96rem;
-    }
-
-    .bio-box {
-      padding-top: 20px;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-sub);
-      font-size: 0.94rem;
-      line-height: 1.7;
-    }
-
-    .bio-highlights {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .highlight-pill {
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      padding: 6px 14px;
-      border-radius: 12px;
-      font-size: 0.84rem;
-      color: var(--text-main);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .highlight-pill strong {
-      color: var(--pastel-purple);
-      font-weight: 600;
-    }
-
-    /* ô 2: mp3 music player (curved square, không xoay) */
-    .player-top {
+    .social-heading {
       display: flex;
       align-items: center;
-      gap: 18px;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .social-heading strong { font-size: .84rem; }
+    .social-heading span { color: var(--muted-2); font-size: .73rem; }
+    .socials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      min-width: 0;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel-strong) 52%, transparent);
+      font-size: .81rem;
+      font-weight: 650;
+      transition: transform .2s ease, color .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .social-link:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--accent-2) 55%, var(--line));
+      background: var(--panel-strong);
+    }
+    .social-icon {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      flex: 0 0 24px;
+      color: var(--accent-ink);
+      background: var(--accent);
+      font-size: .66rem;
+      font-weight: 900;
+    }
+    .social-link:nth-child(2n) .social-icon { background: var(--accent-2); }
+    .social-link .arrow { margin-left: auto; opacity: .45; font-size: .9rem; }
+
+    /* cột phải: main column */
+    .main-column {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      min-width: 0;
     }
 
-    .cover-square {
-      width: 84px;
-      height: 84px;
-      flex-shrink: 0;
-      border-radius: 18px; /* ô vuông bo góc curved square */
+    /* cụm bento hàng đầu: welcome + music player */
+    .top-bento-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .95fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .welcome-card {
+      padding: 34px 36px;
+      min-height: 250px;
+      position: relative;
       overflow: hidden;
-      border: 1px solid var(--border-color);
-      background: linear-gradient(135deg, rgba(216, 180, 254, 0.25), rgba(254, 240, 138, 0.2));
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .welcome-card::after {
+      content: "✳";
+      position: absolute;
+      right: 24px;
+      bottom: -55px;
+      color: color-mix(in srgb, var(--accent-2) 14%, transparent);
+      font-size: 13.5rem;
+      line-height: 1;
+      transform: rotate(-12deg);
+      pointer-events: none;
+    }
+    .welcome-card h2 {
+      max-width: 13ch;
+      margin: 18px 0 14px;
+      font-size: clamp(1.95rem, 3.6vw, 3.1rem);
+      line-height: 1.05;
+      letter-spacing: -.07em;
+      font-weight: 820;
+      position: relative;
+      z-index: 1;
+    }
+    .welcome-card h2 em {
+      font-style: normal;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .welcome-card p {
+      margin: 0;
+      max-width: 48ch;
+      color: var(--muted);
+      font-size: .92rem;
+      position: relative;
+      z-index: 1;
     }
 
+    /* thẻ phát nhạc .flac / .mp3 với ô vuông bo góc */
+    .music-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .music-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cover-square {
+      width: 78px;
+      height: 78px;
+      flex: 0 0 78px;
+      border-radius: 20px; /* ô vuông bo góc curved square, không xoay */
+      padding: 2px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 26px color-mix(in srgb, var(--accent-2) 18%, transparent);
+    }
     .cover-square img {
       width: 100%;
       height: 100%;
+      border-radius: 18px;
       object-fit: cover;
       display: block;
+      background: var(--bg-raised);
     }
-
-    .track-info {
-      overflow: hidden;
+    .track-meta {
+      min-width: 0;
       flex: 1;
     }
-
     .track-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
+      font-size: 1.05rem;
+      font-weight: 760;
+      letter-spacing: -.03em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
-
     .track-artist {
-      font-size: 0.88rem;
-      color: var(--pastel-purple);
+      font-size: .82rem;
+      color: var(--accent-2);
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .player-progress-area {
-      margin-bottom: 16px;
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
     }
-
-    .progress-bar-bg {
+    .progress-bar {
       width: 100%;
-      height: 6px;
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 9999px;
+      height: 7px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--panel-strong) 75%, transparent);
+      border: 1px solid var(--line);
       cursor: pointer;
       overflow: hidden;
       position: relative;
     }
-
-    .progress-bar-fill {
+    .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--pastel-purple), var(--pastel-yellow));
-      border-radius: 9999px;
-      transition: width 0.1s linear;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .1s linear;
     }
-
-    .time-row {
+    .time-meta {
       display: flex;
       justify-content: space-between;
-      font-size: 0.76rem;
-      color: var(--text-sub);
-      margin-top: 6px;
+      font-size: .72rem;
+      color: var(--muted-2);
+      font-weight: 600;
     }
-
     .player-controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-    }
-
-    .ctrl-buttons {
-      display: flex;
-      align-items: center;
       gap: 10px;
     }
-
-    .ctrl-btn {
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .ctrl-btn:hover {
-      border-color: var(--pastel-purple);
-      color: var(--pastel-yellow);
-      transform: translateY(-1px);
-    }
-
-    .ctrl-btn.play-main {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(216, 180, 254, 0.25), rgba(254, 240, 138, 0.25));
-      border-color: var(--pastel-yellow);
-      color: var(--pastel-yellow);
-    }
-
-    .ctrl-btn svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-
-    .volume-wrap {
+    .ctrl-group {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: var(--text-sub);
     }
-
-    .volume-wrap svg {
+    .ctrl-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--panel-strong) 55%, transparent);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .ctrl-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-2);
+    }
+    .ctrl-btn.play-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: var(--accent-ink);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-2) 24%, transparent);
+    }
+    .ctrl-btn svg {
       width: 15px;
       height: 15px;
       fill: currentColor;
     }
-
-    .volume-slider {
+    .vol-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+    }
+    .vol-group svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+    .vol-slider {
       -webkit-appearance: none;
       appearance: none;
-      width: 72px;
-      height: 4px;
+      width: 68px;
+      height: 5px;
       border-radius: 999px;
-      background: var(--inner-bg);
-      border: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--panel-strong) 75%, transparent);
+      border: 1px solid var(--line);
       outline: none;
       cursor: pointer;
     }
-
-    .volume-slider::-webkit-slider-thumb {
+    .vol-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--pastel-yellow);
+      background: var(--accent-2);
       cursor: pointer;
     }
 
-    /* dải nút mạng xã hội */
-    .social-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 18px;
-    }
-
-    .social-btn {
+    /* các thẻ nội dung: about & setup */
+    .content-card { padding: 30px 32px; }
+    .section-head {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 16px 20px;
-      background-color: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 0.94rem;
-      font-weight: 500;
-      transition: all 0.25s ease;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
     }
-
-    .social-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-      color: var(--pastel-purple);
-      transition: color 0.25s ease;
-    }
-
-    .social-btn:hover {
-      border-color: var(--pastel-yellow);
-      background-color: var(--card-hover);
-      color: var(--pastel-yellow);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px var(--accent-glow);
-    }
-
-    .social-btn:hover svg {
-      color: var(--pastel-yellow);
-    }
-
-    /* 3 ô kỹ năng tách riêng thoáng mắt */
-    .skill-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--pastel-purple);
-      margin-bottom: 10px;
-    }
-
-    .skill-desc {
-      font-size: 0.9rem;
-      color: var(--text-sub);
-      line-height: 1.65;
-    }
-
-    /* thông số pc */
-    .spec-list {
+    .section-title-wrap {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 12px;
+      min-width: 0;
     }
-
-    .spec-item {
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
+    .section-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 40px;
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: color-mix(in srgb, var(--accent-2) 15%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-2) 25%, transparent);
+      color: var(--accent-2);
+      font-size: 1.05rem;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: -.035em;
+      line-height: 1.2;
+    }
+    .section-kicker {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted-2);
+      font-size: .74rem;
+    }
+    .section-number {
+      color: var(--muted-2);
+      font-size: .72rem;
+      font-weight: 750;
+      letter-spacing: .1em;
+    }
+    .about-copy {
+      color: var(--muted);
+      font-size: .91rem;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .fact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .fact {
+      padding: 15px 16px;
+      border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 14px 18px;
+      background: color-mix(in srgb, var(--panel-strong) 48%, transparent);
+    }
+    .fact-label {
+      display: block;
+      color: var(--muted-2);
+      font-size: .71rem;
+      letter-spacing: .08em;
+      margin-bottom: 5px;
+    }
+    .fact strong { font-size: .86rem; font-weight: 650; }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .setup-block {
+      min-width: 0;
+      padding: 20px;
+      background: color-mix(in srgb, var(--panel-strong) 48%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+    .setup-block.wide { grid-column: 1 / -1; }
+    .setup-block-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+    .setup-block-head .setup-emoji { font-size: 1.05rem; }
+    .setup-block h3 { font-size: .86rem; margin: 0; letter-spacing: -.015em; }
+    .setup-block p, .setup-block li {
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.68;
+    }
+    .setup-block p { margin: 0; }
+    .clean-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
-
-    .spec-type {
-      font-size: 0.76rem;
-      color: var(--pastel-purple);
-      font-weight: 600;
+    .clean-list li {
+      padding-left: 15px;
+      position: relative;
     }
-
-    .spec-detail {
-      font-size: 0.92rem;
-      color: var(--text-main);
+    .clean-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .7em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
     }
-
-    .spec-note {
-      font-size: 0.8rem;
-      color: var(--pastel-yellow);
+    .phone-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 14px;
     }
-
-    /* bộ sưu tập điện thoại */
-    .daily-driver-box {
-      background: linear-gradient(135deg, rgba(216, 180, 254, 0.14), rgba(254, 240, 138, 0.1));
-      border: 1px solid var(--pastel-purple);
-      border-radius: 18px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-    }
-
-    .device-chips {
+    .pc-highlight { color: var(--text); font-weight: 650; }
+    .tech-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .tech-tag {
+      font-size: .7rem;
+      padding: 5px 10px;
+      border-radius: 8px;
+      color: var(--accent-2);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      font-weight: 600;
     }
 
-    .device-chip {
-      background-color: var(--inner-bg);
-      border: 1px solid var(--border-color);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      transition: all 0.2s ease;
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 28px 4px 0;
+      color: var(--muted-2);
+      font-size: .76rem;
     }
+    .footer-mark { color: var(--accent-2); }
+    .back-top { text-decoration: none; color: var(--muted); }
+    .back-top:hover { color: var(--accent); }
 
-    .device-chip:hover {
-      border-color: var(--pastel-yellow);
-      color: var(--text-main);
-      transform: translateY(-1px);
+    /* responsive */
+    @media (max-width: 960px) {
+      .top-bento-row { grid-template-columns: 1fr; }
     }
-
-    footer {
-      text-align: center;
-      font-size: 0.84rem;
-      color: var(--text-sub);
-      padding-top: 16px;
-      opacity: 0.85;
+    @media (max-width: 850px) {
+      body { padding-inline: 18px; }
+      .hero-grid { grid-template-columns: minmax(0, .92fr) minmax(0, 1.35fr); gap: 18px; }
+      .profile-card { padding: 24px; }
+      .welcome-card, .content-card, .music-card { padding: 24px; }
+      .socials { grid-template-columns: 1fr; }
+      .nav { gap: 14px; }
     }
-
-    /* tương thích màn hình nhỏ */
-    @media (max-width: 900px) {
-      .col-7, .col-5, .col-6, .col-4 {
-        grid-column: span 12;
-      }
-      .social-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .social-grid a:last-child {
-        grid-column: span 2;
-      }
+    @media (max-width: 680px) {
+      .topbar { padding-top: 18px; }
+      .nav { display: none; }
+      .brand-label small { display: none; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .profile-card { position: relative; top: 0; padding: 26px; }
+      .socials { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .social-link { flex-direction: column; justify-content: center; gap: 6px; text-align: center; padding: 12px 6px; }
+      .social-link .arrow { display: none; }
+      .footer { flex-wrap: wrap; }
     }
-
-    @media (max-width: 520px) {
-      body {
-        padding: 20px 14px 60px;
-      }
-      .hero-top {
-        flex-direction: column;
-        text-align: center;
-      }
-      .bio-highlights {
-        justify-content: center;
+    @media (max-width: 460px) {
+      body { padding-inline: 12px; }
+      .socials { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .social-link { flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px; }
+      .fact-grid, .setup-grid { grid-template-columns: 1fr; }
+      .setup-block.wide { grid-column: auto; }
+      .phone-list { grid-template-columns: 1fr 1fr; }
+      .section-number { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
       }
     }
   </style>
 </head>
 <body>
+  <div class="ambient" aria-hidden="true"></div>
+  <img id="bgImg" class="background-photo" src="./images/banner-dark.jpg" alt="" aria-hidden="true">
 
-  <!-- ảnh background toàn màn hình -->
-  <img id="bgImg" class="bg-image" src="./images/banner-dark.jpg" alt="background">
-  <div class="bg-overlay"></div>
-
-  <div class="portfolio-wrapper">
-    <!-- thanh điều hướng -->
-    <nav class="navbar">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span>leekhoi.space</span>
-      </div>
-      <button id="themeToggle" class="theme-toggle-btn" aria-label="toggle theme">
-        <span id="themeIcon">☀️</span>
-        <span id="themeText">light</span>
+  <header class="topbar" id="top">
+    <a class="brand" href="#top" aria-label="leekhoi home">
+      <span class="brand-mark">lk.</span>
+      <span class="brand-label">leekhoi <small>welcome to my vibecoded website</small></span>
+    </a>
+    <div class="topbar-right">
+      <nav class="nav" aria-label="main navigation">
+        <a href="#music">music</a>
+        <a href="#about">about</a>
+        <a href="#setup">my setup</a>
+        <a href="#socials">find me</a>
+      </nav>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="switch color theme">
+        <span id="themeIcon" class="theme-icon" aria-hidden="true">☀</span>
+        <span id="themeText">light mode</span>
       </button>
-    </nav>
+    </div>
+  </header>
 
-    <!-- lưới bento rộng rãi -->
-    <div class="bento-grid">
+  <main>
+    <div class="hero-grid">
+      <!-- cột hồ sơ bên trái -->
+      <aside class="panel profile-card" aria-label="profile">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> personal website</span>
+        <div class="avatar-wrap">
+          <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="leekhoi's avatar">
+        </div>
+        <h1>hi, i'm<br>leekhoi<span style="color:var(--accent)">.</span></h1>
+        <div class="handle">aka lê khôi / khoi</div>
+        <p class="intro">welcome to my vibecoded website — mostly tech, devices, music, and whatever catches my curiosity.</p>
+        <div class="meta-row">
+          <span class="pill"><span class="tiny-icon">⌖</span> quang ninh, vietnam</span>
+          <span class="pill"><span class="tiny-icon">✦</span> tech enthusiast</span>
+        </div>
+        <hr class="profile-divider">
+        <div class="social-heading" id="socials"><strong>find me around</strong><span>say hi ✳</span></div>
+        <div class="socials">
+          <a class="social-link" href="https://t.me/lekhoi2811" target="_blank" rel="noopener noreferrer"><span class="social-icon">tg</span><span>telegram</span><span class="arrow">↗</span></a>
+          <a class="social-link" href="https://soundcloud.com/lekhoi2811" target="_blank" rel="noopener noreferrer"><span class="social-icon">sc</span><span>soundcloud</span><span class="arrow">↗</span></a>
+          <a class="social-link" href="https://tiktok.com/@lekhoi2811" target="_blank" rel="noopener noreferrer"><span class="social-icon">tt</span><span>tiktok</span><span class="arrow">↗</span></a>
+          <a class="social-link" href="https://github.com/khoilovesyou" target="_blank" rel="noopener noreferrer"><span class="social-icon">gh</span><span>github</span><span class="arrow">↗</span></a>
+          <a class="social-link" href="https://open.spotify.com/user/31ga5gg5uhonbqtozsvnir3nbsoa" target="_blank" rel="noopener noreferrer"><span class="social-icon">sp</span><span>spotify</span><span class="arrow">↗</span></a>
+        </div>
+      </aside>
 
-      <!-- ô 1: giới thiệu bản thân (7 cột) -->
-      <div class="bento-card col-7">
-        <div>
-          <div class="hero-top">
-            <div class="avatar-wrapper">
-              <img id="avatarImg" class="avatar" src="./images/avatar-dark.jpg" alt="avatar">
-            </div>
-            <div>
-              <div class="status-badge">
-                <span class="status-badge-dot"></span>
-                <span>quang ninh, vietnam</span>
+      <!-- cột nội dung chính bên phải -->
+      <div class="main-column">
+        <div class="top-bento-row">
+          <!-- thẻ chào mừng -->
+          <section class="panel welcome-card" aria-labelledby="welcome-title">
+            <span class="eyebrow"><span class="eyebrow-dot"></span> welcome to my space</span>
+            <h2 id="welcome-title">curious about <em>tech.</em><br>always learning.</h2>
+            <p>not a coder, more of a hands-on tinkerer. i like figuring out how things work, one device and one weird log at a time.</p>
+          </section>
+
+          <!-- thẻ phát nhạc .flac / .mp3 hình vuông bo góc -->
+          <section class="panel music-card" id="music" aria-label="music player">
+            <span class="eyebrow"><span class="eyebrow-dot"></span> now playing</span>
+
+            <div class="music-top">
+              <div class="cover-square">
+                <img id="trackCover" src="./images/cover.jpg" alt="album cover">
               </div>
-              <h1>hi, i'm leekhoi</h1>
-              <p class="subtitle">welcome to my vibecoded website</p>
+              <div class="track-meta">
+                <div id="trackTitle" class="track-title">favorite vibe</div>
+                <div id="trackArtist" class="track-artist">leekhoi's audio (.flac)</div>
+              </div>
             </div>
-          </div>
 
-          <div class="bio-box">
-            <p>
-              i'm lê khôi but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves
-            </p>
-            <div class="bio-highlights">
-              <span class="highlight-pill"><strong>favorite color:</strong> purple</span>
-              <span class="highlight-pill"><strong>birthday:</strong> november 28th</span>
+            <div class="progress-wrap">
+              <div id="progressBar" class="progress-bar" role="slider" aria-label="seek progress">
+                <div id="progressFill" class="progress-fill"></div>
+              </div>
+              <div class="time-meta">
+                <span id="currentTime">0:00</span>
+                <span id="totalDuration">0:00</span>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- ô 2: trình phát nhạc .mp3 hình vuông bo góc (5 cột) -->
-      <div class="bento-card col-5">
-        <div>
-          <div class="card-label">
-            <span class="dot"></span>
-            <span>now playing — music box</span>
-          </div>
+            <div class="player-controls">
+              <div class="ctrl-group">
+                <button id="prevBtn" class="ctrl-btn" type="button" aria-label="previous track">
+                  <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                </button>
+                <button id="playPauseBtn" class="ctrl-btn play-btn" type="button" aria-label="play or pause">
+                  <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button id="nextBtn" class="ctrl-btn" type="button" aria-label="next track">
+                  <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+              </div>
 
-          <div class="player-top">
-            <div class="cover-square">
-              <img id="trackCover" src="./images/cover.jpg" onerror="this.src='./images/avatar-dark.jpg'" alt="track cover">
+              <div class="vol-group">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                <input id="volumeSlider" class="vol-slider" type="range" min="0" max="1" step="0.02" value="0.8" aria-label="volume">
+              </div>
             </div>
-            <div class="track-info">
-              <div id="trackTitle" class="track-title">favorite vibe</div>
-              <div id="trackArtist" class="track-artist">leekhoi's audio</div>
-            </div>
-          </div>
 
-          <div class="player-progress-area">
-            <div id="progressBar" class="progress-bar-bg">
-              <div id="progressFill" class="progress-bar-fill"></div>
-            </div>
-            <div class="time-row">
-              <span id="currentTime">0:00</span>
-              <span id="totalDuration">0:00</span>
-            </div>
-          </div>
+            <audio id="audioPlayer" preload="metadata"></audio>
+          </section>
         </div>
 
-        <div class="player-controls">
-          <div class="ctrl-buttons">
-            <button id="prevBtn" class="ctrl-btn" title="previous track" aria-label="previous">
-              <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-            </button>
-            <button id="playPauseBtn" class="ctrl-btn play-main" title="play or pause" aria-label="play">
-              <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button id="nextBtn" class="ctrl-btn" title="next track" aria-label="next">
-              <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-            </button>
-          </div>
-
-          <div class="volume-wrap">
-            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <input id="volumeSlider" type="range" class="volume-slider" min="0" max="1" step="0.02" value="0.8" aria-label="volume">
-          </div>
-        </div>
-
-        <!-- thẻ audio ẩn load trực tiếp file mp3 -->
-        <audio id="audioPlayer" preload="metadata"></audio>
-      </div>
-
-      <!-- ô 3: dải nút mạng xã hội (12 cột) -->
-      <div class="col-12">
-        <div class="social-grid">
-          <a href="https://t.me/lekhoi2811" target="_blank" class="social-btn">
-            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            <span>telegram</span>
-          </a>
-          <a href="https://soundcloud.com/lekhoi2811" target="_blank" class="social-btn">
-            <svg viewBox="0 0 24 24"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.052-.1-.084-.1zm1.896-.828c-.06 0-.105.045-.113.105l-.217 2.977.217 2.85c.008.06.053.105.113.105.059 0 .105-.045.112-.105l.248-2.85-.248-2.977c-.007-.06-.053-.105-.112-.105zm1.935-.6c-.068 0-.12.052-.127.12l-.195 3.577.195 3.398c.007.067.059.12.127.12.068 0 .12-.053.128-.12l.217-3.398-.217-3.577c-.008-.068-.06-.12-.128-.12zm1.943-.375c-.075 0-.135.06-.143.135l-.172 3.952.172 3.72c.008.075.068.135.143.135.075 0 .135-.06.142-.135l.195-3.72-.195-3.952c-.007-.075-.067-.135-.142-.135zm1.98-.9c-.082 0-.15.067-.157.15l-.15 4.852.15 4.02c.007.083.075.15.157.15.083 0 .15-.067.158-.15l.172-4.02-.172-4.852c-.008-.083-.075-.15-.158-.15zm2.01-.675c-.09 0-.165.075-.172.165l-.128 5.527.128 4.192c.007.09.082.165.172.165.09 0 .165-.075.173-.165l.142-4.192-.142-5.527c-.008-.09-.083-.165-.173-.165zm2.04-.45c-.097 0-.18.082-.187.18l-.105 5.977.105 4.29c.007.098.09.18.187.18.098 0 .18-.082.188-.18l.12-4.29-.12-5.977c-.008-.098-.09-.18-.188-.18zm8.046 2.872c-.398 0-.78.083-1.132.233-.24-2.67-2.475-4.763-5.213-4.763-.667 0-1.312.135-1.905.368-.225.09-.285.18-.285.36v9.292c0 .18.143.33.323.345h8.212c1.643 0 2.978-1.335 2.978-2.977 0-1.643-1.335-2.978-2.978-2.978z"/></svg>
-            <span>soundcloud</span>
-          </a>
-          <a href="https://tiktok.com/@lekhoi2811" target="_blank" class="social-btn">
-            <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-            <span>tiktok</span>
-          </a>
-          <a href="https://github.com/khoilovesyou" target="_blank" class="social-btn">
-            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-            <span>github</span>
-          </a>
-          <a href="https://open.spotify.com/user/31ga5gg5uhonbqtozsvnir3nbsoa" target="_blank" class="social-btn">
-            <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-            <span>spotify</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 3 ô khám phá tách rời giúp layout thoáng hơn (mỗi ô 4 cột) -->
-      <div class="bento-card col-4">
-        <div class="card-label"><span class="dot"></span><span>focus 01</span></div>
-        <div class="skill-title">log &amp; behavior analysis</div>
-        <p class="skill-desc">reading system logs, tracing background events, and figuring out how software behaves under the hood.</p>
-      </div>
-
-      <div class="bento-card col-4">
-        <div class="card-label"><span class="dot"></span><span>focus 02</span></div>
-        <div class="skill-title">os &amp; dualboot tinkering</div>
-        <p class="skill-desc">experimenting with operating systems, running windows 10 alongside macos monterey on custom hardware.</p>
-      </div>
-
-      <div class="bento-card col-4">
-        <div class="card-label"><span class="dot"></span><span>focus 03</span></div>
-        <div class="skill-title">hardware &amp; legacy vault</div>
-        <p class="skill-desc">collecting classic mobile devices, testing custom configurations, and upgrading desktop pc builds.</p>
-      </div>
-
-      <!-- ô pc workstation (6 cột) -->
-      <div class="bento-card col-6">
-        <div>
-          <div class="card-label"><span class="dot"></span><span>my pc specs</span></div>
-          <div class="spec-list">
-            <div class="spec-item">
-              <span class="spec-type">cpu &amp; motherboard</span>
-              <span class="spec-detail">i5-11400f + asus prime h510m-k</span>
+        <!-- thẻ giới thiệu bản thân -->
+        <section class="panel content-card" id="about" aria-labelledby="about-title">
+          <div class="section-head">
+            <div class="section-title-wrap">
+              <span class="section-icon" aria-hidden="true">✳</span>
+              <div><h2 id="about-title">a little about me</h2><span class="section-kicker">the human behind the username</span></div>
             </div>
-            <div class="spec-item">
-              <span class="spec-type">memory</span>
-              <span class="spec-detail">2x16gb xpg d50 ddr4 3200mhz</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-type">graphics card</span>
-              <span class="spec-detail">powercolor red devil rx 580 8gb</span>
-              <span class="spec-note">→ will upgrade to a white rtx 5060 soon</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-type">storage array</span>
-              <span class="spec-detail">a mix of 5 ssds and hdds, totaling around 2tb</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-type">operating system</span>
-              <span class="spec-detail">dualbooted with windows 10 and macos monterey</span>
-            </div>
+            <span class="section-number">01 / about</span>
           </div>
-        </div>
+          <p class="about-copy">i'm lê khôi, but u can call me leekhoi or khoi. lives in quang ninh, vietnam and have a passion in tech since the covid-19 pandemic, i can't rlly code but i can read logs and look through basic to figure out how that software behaves.</p>
+          <div class="fact-grid">
+            <div class="fact"><span class="fact-label">favourite colours</span><strong>💛 pastel yellow &nbsp; 🌸 pastel pink</strong></div>
+            <div class="fact"><span class="fact-label">birthday</span><strong>november 28th 🎂</strong></div>
+          </div>
+        </section>
+
+        <!-- thẻ cấu hình thiết bị -->
+        <section class="panel content-card" id="setup" aria-labelledby="setup-title">
+          <div class="section-head">
+            <div class="section-title-wrap">
+              <span class="section-icon" aria-hidden="true">⌘</span>
+              <div><h2 id="setup-title">my setup</h2><span class="section-kicker">daily drivers &amp; tech drawer</span></div>
+            </div>
+            <span class="section-number">02 / gear</span>
+          </div>
+          <div class="setup-grid">
+            <article class="setup-block">
+              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">📱</span><h3>phones</h3></div>
+              <p><span class="pc-highlight">daily driver:</span> iphone 13 midnight</p>
+              <ul class="clean-list phone-list" style="margin-top:10px">
+                <li>iphone 11</li><li>iphone 7 plus</li>
+                <li>iphone 6</li><li>iphone 5s</li>
+                <li>2× xiaomi redmi 9a</li><li>samsung j7 prime</li>
+                <li>samsung j2 prime</li><li>samsung j2</li>
+                <li>sony xperia xz1 (carrier locked)</li>
+              </ul>
+            </article>
+            <article class="setup-block">
+              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">🖥️</span><h3>pc build</h3></div>
+              <ul class="clean-list">
+                <li><span class="pc-highlight">cpu:</span> intel core i5-11400f</li>
+                <li><span class="pc-highlight">board:</span> asus prime h510m-k</li>
+                <li><span class="pc-highlight">memory:</span> 32gb (2×16) xpg d50 ddr4-3200</li>
+                <li><span class="pc-highlight">gpu:</span> powercolor red devil rx 580 8gb</li>
+                <li><span class="pc-highlight">storage:</span> mix of 5 ssds and hdds, around 2tb total</li>
+              </ul>
+              <div class="tech-tags"><span class="tech-tag">windows 10</span><span class="tech-tag">macos monterey</span><span class="tech-tag">dual boot</span></div>
+            </article>
+            <article class="setup-block wide">
+              <div class="setup-block-head"><span class="setup-emoji" aria-hidden="true">✨</span><h3>next upgrade wishlist</h3></div>
+              <p>a white rtx 5060 — because performance is great, but a clean-looking build is great too.</p>
+            </article>
+          </div>
+        </section>
       </div>
-
-      <!-- ô bộ sưu tập điện thoại (6 cột) -->
-      <div class="bento-card col-6">
-        <div>
-          <div class="card-label"><span class="dot"></span><span>my phone collection</span></div>
-
-          <div class="daily-driver-box">
-            <div class="spec-type">daily phone</div>
-            <div class="spec-detail" style="font-weight: 700; font-size: 1.08rem; margin-top: 4px;">iphone 13 midnight</div>
-            <div class="spec-note" style="margin-top: 2px;">primary daily driver</div>
-          </div>
-
-          <div class="spec-type" style="margin-bottom: 12px; display: block;">other phones i have</div>
-          <div class="device-chips">
-            <span class="device-chip">iphone 11</span>
-            <span class="device-chip">iphone 7 plus</span>
-            <span class="device-chip">iphone 6</span>
-            <span class="device-chip">iphone 5s</span>
-            <span class="device-chip">two xiaomi redmi 9a</span>
-            <span class="device-chip">samsung j7 prime</span>
-            <span class="device-chip">samsung j2 prime</span>
-            <span class="device-chip">samsung j2</span>
-            <span class="device-chip">sony xperia xz1 (carrier locked)</span>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <footer>
-      crafted with vibecoding • leekhoi © 2026
+    <footer class="footer">
+      <span>made with <span class="footer-mark">♥</span> and a little too much curiosity.</span>
+      <a class="back-top" href="#top">back to top ↑</a>
     </footer>
-  </div>
+  </main>
 
   <script>
-    /* ==========================================================================
-       1. CẤU HÌNH NHẠC MP3 (CẬU SỬA TÊN BÀI & ĐƯỜNG DẪN FILE Ở ĐÂY NHA)
-       ========================================================================== */
-    const playlist = [
-      {
-        title: "girls like u (ft. cardi b)",
-        artist: "maroon 5",
-        src: "./music/song.mp3",
-        cover: "./images/cover.jpg"
+    (() => {
+      /* --- 1. danh sách nhạc .flac / .mp3 --- */
+      const playlist = [
+        {
+          title: 'favorite vibe',
+          artist: 'leekhoi playlist',
+          src: './music/song.flac',
+          cover: './images/cover.jpg'
+        }
+      ];
+
+      /* --- 2. chuyển đổi dark / light mode --- */
+      const body = document.body;
+      const toggle = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+      const bgImg = document.getElementById('bgImg');
+      const avatarImg = document.getElementById('avatarImg');
+      const trackCover = document.getElementById('trackCover');
+
+      const themeImages = {
+        dark: { bg: './images/banner-dark.jpg', avatar: './images/avatar-dark.jpg' },
+        light: { bg: './images/banner.jpg', avatar: './images/avatar.jpg' }
+      };
+
+      let hasSavedPreference = false;
+      try { hasSavedPreference = Boolean(localStorage.getItem('user-theme')); } catch (_) {}
+
+      function preferredTheme() {
+        try {
+          const saved = localStorage.getItem('user-theme');
+          if (saved === 'dark' || saved === 'light') return saved;
+        } catch (_) {}
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       }
-      // cậu có thể copy thêm nhiều bài nữa vào danh sách này nếu thích nè
-    ];
 
-    /* ==========================================================================
-       2. CẤU HÌNH ĐỔI THEME DARK / LIGHT (DARK CÓ PREFIX -dark)
-       ========================================================================== */
-    const themeImages = {
-      dark: {
-        bg: "./images/banner-dark.jpg",
-        avatar: "./images/avatar-dark.jpg"
-      },
-      light: {
-        bg: "./images/banner.jpg",
-        avatar: "./images/avatar.jpg"
+      function setTheme(theme, save = false) {
+        const isLight = theme === 'light';
+        body.classList.toggle('light-theme', isLight);
+        icon.textContent = isLight ? '☾' : '☼';
+        text.textContent = isLight ? 'dark mode' : 'light mode';
+        toggle.setAttribute('aria-label', isLight ? 'switch to dark theme' : 'switch to light theme');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', isLight ? '#fdf8fa' : '#121015');
+        if (bgImg) bgImg.src = isLight ? themeImages.light.bg : themeImages.dark.bg;
+        if (avatarImg) avatarImg.src = isLight ? themeImages.light.avatar : themeImages.dark.avatar;
+        if (save) {
+          try { localStorage.setItem('user-theme', theme); } catch (_) {}
+        }
       }
-    };
 
-    const toggleBtn = document.getElementById("themeToggle");
-    const themeIcon = document.getElementById("themeIcon");
-    const themeText = document.getElementById("themeText");
-    const bgImg = document.getElementById("bgImg");
-    const avatarImg = document.getElementById("avatarImg");
+      [bgImg, avatarImg].forEach((img) => {
+        if (!img) return;
+        img.addEventListener('error', () => {
+          if (img === bgImg) img.style.display = 'none';
+          else {
+            img.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'avatar-fallback';
+            fallback.textContent = 'lk';
+            img.parentElement.appendChild(fallback);
+          }
+        }, { once: true });
+      });
 
-    function getPreferredTheme() {
-      const savedTheme = localStorage.getItem("user-theme");
-      if (savedTheme) return savedTheme;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-
-    function applyTheme(theme) {
-      if (theme === "light") {
-        document.body.classList.add("light-theme");
-        themeIcon.textContent = "🌙";
-        themeText.textContent = "dark";
-        bgImg.src = themeImages.light.bg;
-        avatarImg.src = themeImages.light.avatar;
-      } else {
-        document.body.classList.remove("light-theme");
-        themeIcon.textContent = "☀️";
-        themeText.textContent = "light";
-        bgImg.src = themeImages.dark.bg;
-        avatarImg.src = themeImages.dark.avatar;
+      if (trackCover) {
+        trackCover.addEventListener('error', () => {
+          const isLight = body.classList.contains('light-theme');
+          trackCover.src = isLight ? themeImages.light.avatar : themeImages.dark.avatar;
+        }, { once: true });
       }
-    }
 
-    let currentTheme = getPreferredTheme();
-    applyTheme(currentTheme);
+      setTheme(preferredTheme());
+      toggle.addEventListener('click', () => {
+        setTheme(body.classList.contains('light-theme') ? 'dark' : 'light', true);
+      });
 
-    toggleBtn.addEventListener("click", () => {
-      currentTheme = currentTheme === "dark" ? "light" : "dark";
-      localStorage.setItem("user-theme", currentTheme);
-      applyTheme(currentTheme);
-    });
-
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-      if (!localStorage.getItem("user-theme")) {
-        currentTheme = e.matches ? "dark" : "light";
-        applyTheme(currentTheme);
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', (event) => {
+          if (!hasSavedPreference) setTheme(event.matches ? 'dark' : 'light');
+        });
       }
-    });
 
-    /* ==========================================================================
-       3. XỬ LÝ TRÌNH PHÁT NHẠC MP3
-       ========================================================================== */
-    let currentTrackIndex = 0;
-    let isPlaying = false;
+      /* --- 3. xử lý phát nhạc .flac / .mp3 --- */
+      let currentTrackIndex = 0;
+      let isPlaying = false;
 
-    const audio = document.getElementById("audioPlayer");
-    const playPauseBtn = document.getElementById("playPauseBtn");
-    const playIcon = document.getElementById("playIcon");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const progressBar = document.getElementById("progressBar");
-    const progressFill = document.getElementById("progressFill");
-    const currentTimeEl = document.getElementById("currentTime");
-    const totalDurationEl = document.getElementById("totalDuration");
-    const trackTitleEl = document.getElementById("trackTitle");
-    const trackArtistEl = document.getElementById("trackArtist");
-    const trackCoverEl = document.getElementById("trackCover");
-    const volumeSlider = document.getElementById("volumeSlider");
+      const audio = document.getElementById('audioPlayer');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const playIcon = document.getElementById('playIcon');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const progressBar = document.getElementById('progressBar');
+      const progressFill = document.getElementById('progressFill');
+      const currentTimeEl = document.getElementById('currentTime');
+      const totalDurationEl = document.getElementById('totalDuration');
+      const trackTitleEl = document.getElementById('trackTitle');
+      const trackArtistEl = document.getElementById('trackArtist');
+      const volumeSlider = document.getElementById('volumeSlider');
 
-    function loadTrack(index) {
-      const track = playlist[index];
-      trackTitleEl.textContent = track.title;
-      trackArtistEl.textContent = track.artist;
-      trackCoverEl.src = track.cover;
-      audio.src = track.src;
-      audio.load();
-    }
-
-    function formatTime(sec) {
-      if (isNaN(sec) || sec < 0) return "0:00";
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s < 10 ? "0" : ""}${s}`; }  function updatePlayIcon() { if (isPlaying) { playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; } else { playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; } }  playPauseBtn.addEventListener("click", () => { if (isPlaying) { audio.pause(); } else { audio.play().catch(() => { trackArtistEl.textContent = "chưa tìm thấy file ./music/song.mp3"; }); } });  audio.addEventListener("play", () => { isPlaying = true; updatePlayIcon(); });  audio.addEventListener("pause", () => { isPlaying = false; updatePlayIcon(); });  audio.addEventListener("loadedmetadata", () => { totalDurationEl.textContent = formatTime(audio.duration); });  audio.addEventListener("timeupdate", () => { if (audio.duration) { const pct = (audio.currentTime / audio.duration) * 100; progressFill.style.width = `${pct}%`;
-        currentTimeEl.textContent = formatTime(audio.currentTime);
+      function loadTrack(index) {
+        const track = playlist[index];
+        trackTitleEl.textContent = track.title;
+        trackArtistEl.textContent = track.artist;
+        trackCover.src = track.cover;
+        audio.src = track.src;
+        audio.load();
       }
-    });
 
-    audio.addEventListener("ended", () => {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      function formatTime(sec) {
+        if (isNaN(sec) || sec < 0) return '0:00';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`; }  function updatePlayIcon() { playIcon.innerHTML = isPlaying ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; }  playPauseBtn.addEventListener('click', () => { if (isPlaying) { audio.pause(); } else { audio.play().catch(() => { trackArtistEl.textContent = 'put file in ./music/song.flac'; }); } });  audio.addEventListener('play', () => { isPlaying = true; updatePlayIcon(); }); audio.addEventListener('pause', () => { isPlaying = false; updatePlayIcon(); }); audio.addEventListener('loadedmetadata', () => { totalDurationEl.textContent = formatTime(audio.duration); }); audio.addEventListener('timeupdate', () => { if (audio.duration) { const pct = (audio.currentTime / audio.duration) * 100; progressFill.style.width = `${pct}%`;
+          currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
+      });
+      audio.addEventListener('ended', () => {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex);
+        audio.play();
+      });
+
+      progressBar.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+        const rect = progressBar.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pct * audio.duration;
+      });
+
+      prevBtn.addEventListener('click', () => {
+        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+        loadTrack(currentTrackIndex);
+        if (isPlaying) audio.play();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex);
+        if (isPlaying) audio.play();
+      });
+
+      volumeSlider.addEventListener('input', (e) => {
+        audio.volume = parseFloat(e.target.value);
+      });
+
       loadTrack(currentTrackIndex);
-      audio.play();
-    });
-
-    progressBar.addEventListener("click", (e) => {
-      if (!audio.duration) return;
-      const rect = progressBar.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const pct = clickX / rect.width;
-      audio.currentTime = pct * audio.duration;
-    });
-
-    prevBtn.addEventListener("click", () => {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      loadTrack(currentTrackIndex);
-      if (isPlaying) audio.play();
-    });
-
-    nextBtn.addEventListener("click", () => {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      loadTrack(currentTrackIndex);
-      if (isPlaying) audio.play();
-    });
-
-    volumeSlider.addEventListener("input", (e) => {
-      audio.volume = parseFloat(e.target.value);
-    });
-
-    // khởi tạo bài hát đầu tiên
-    loadTrack(currentTrackIndex);
-    audio.volume = 0.8;
+      audio.volume = 0.8;
+    })();
   </script>
-
 </body>
 </html>
